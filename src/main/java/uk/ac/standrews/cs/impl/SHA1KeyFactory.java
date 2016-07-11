@@ -22,55 +22,7 @@ import java.security.NoSuchAlgorithmException;
 public class SHA1KeyFactory {
 	
 	private static final int HEX_BASE = 16;
-	
-    /**
-     * Prints out the digest in a form that can be easily compared to the test vectors. 
-     */
-    /*
-    public static String toHex(byte[] bytes ) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < bytes.length ; i++) { 
-            char c1, c2;
-            c1 = (char)((bytes[i] >>> 4) & 0xf);
-            c2 = (char)(bytes[i] & 0xf);
-            c1 = (char)((c1 > 9) ? 'a' + (c1 - 10) : '0' + c1);
-            c2 = (char)((c2 > 9) ? 'a' + (c2 - 10) : '0' + c2);
-            sb.append(c1);
-            sb.append(c2);
-        }
-        return sb.toString();
-    }
-    */
-    
-    public static byte[] hash( byte[] bytes ) throws GUIDGenerationException {
-		try {
-			MessageDigest digest = MessageDigest.getInstance("SHA");
-			digest.update(bytes, 0, bytes.length);
-			return digest.digest();
-		} catch (NoSuchAlgorithmException e) {
-			throw new GUIDGenerationException();
-		}
 
-		/*
-			sun.security.provider.SHA sha = new sun.security.provider.SHA();
-			sha.engineUpdate
-			return sha.engineDigest();
-        */
-    }
-
-    public static byte[] hash(InputStream source) throws GUIDGenerationException {
-        try {
-            return DigestUtils.sha1(source);
-        } catch (IOException e) {
-			throw new GUIDGenerationException();
-        }
-
-		/*
-			sun.security.provider.SHA sha = new sun.security.provider.SHA();
-			sha.engineUpdate
-			return sha.engineDigest();
-        */
-    }
     /**
 	 * Creates a key with an arbitrary value. Subsequent calls return uk.ac.standrews.cs.impl with the same value.
 	 * 
@@ -87,7 +39,7 @@ public class SHA1KeyFactory {
 	 * @return a key with a value generated from s
 	 */
 	public static IKey generateKey(String string) throws GUIDGenerationException {
-        if (string == null) {
+        if (string == null || string.isEmpty()) {
             throw new GUIDGenerationException();
         }
 
@@ -98,11 +50,15 @@ public class SHA1KeyFactory {
 	 * Creates a new key using the String representation of a BigInteger
 	 * This method has been added for use in for de-serialisation - al
 	 * 
-	 * @param s - the String representation of a serialised Key
+	 * @param string - the String representation of a serialised Key
 	 * @return a new Key using the parameter s as a long value
 	 */
-	public static IKey recreateKey(String s) throws GUIDGenerationException {
-	    return new KeyImpl(s);
+	public static IKey recreateKey(String string) throws GUIDGenerationException {
+        if (string == null || string.isEmpty()) {
+            throw new GUIDGenerationException();
+        }
+
+        return new KeyImpl(string);
 	}
 	
 	/**
@@ -145,5 +101,42 @@ public class SHA1KeyFactory {
                 String.valueOf(Runtime.getRuntime().freeMemory());
 		return generateKey(seed);
 	}
+
+    /**
+     * Prints out the digest in a form that can be easily compared to the test vectors.
+     */
+    /*
+    public static String toHex(byte[] bytes ) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < bytes.length ; i++) {
+            char c1, c2;
+            c1 = (char)((bytes[i] >>> 4) & 0xf);
+            c2 = (char)(bytes[i] & 0xf);
+            c1 = (char)((c1 > 9) ? 'a' + (c1 - 10) : '0' + c1);
+            c2 = (char)((c2 > 9) ? 'a' + (c2 - 10) : '0' + c2);
+            sb.append(c1);
+            sb.append(c2);
+        }
+        return sb.toString();
+    }
+    */
+
+    private static byte[] hash(byte[] bytes) throws GUIDGenerationException {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA");
+            digest.update(bytes, 0, bytes.length);
+            return digest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            throw new GUIDGenerationException();
+        }
+    }
+
+    private static byte[] hash(InputStream source) throws GUIDGenerationException {
+        try {
+            return DigestUtils.sha1(source);
+        } catch (IOException e) {
+            throw new GUIDGenerationException();
+        }
+    }
 
 }

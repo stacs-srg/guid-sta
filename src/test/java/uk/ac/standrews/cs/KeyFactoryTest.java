@@ -3,10 +3,10 @@ package uk.ac.standrews.cs;/*
  */
 
 
+import org.testng.annotations.Test;
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
 import uk.ac.standrews.cs.impl.IKey;
 import uk.ac.standrews.cs.impl.SHA1KeyFactory;
-import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.AssertJUnit.assertEquals;
@@ -75,13 +75,13 @@ public class KeyFactoryTest {
         assertEquals("195e24370036a4062b0d325c03153a2b9fc9c92e", k1.toString());
     }
 
-    @Test (expectedExceptions = NullPointerException.class)
+    @Test (expectedExceptions = GUIDGenerationException.class)
     public void testRecreateKeyNull() throws GUIDGenerationException {
         IKey k1 = SHA1KeyFactory.recreateKey(null);
         assertEquals("195e24370036a4062b0d325c03153a2b9fc9c92e", k1.toString());
     }
 
-    @Test (expectedExceptions = NumberFormatException.class)
+    @Test (expectedExceptions = GUIDGenerationException.class)
     public void testRecreateKeyEmpty() throws GUIDGenerationException {
         IKey k1 = SHA1KeyFactory.recreateKey("");
         assertEquals("195e24370036a4062b0d325c03153a2b9fc9c92e", k1.toString());

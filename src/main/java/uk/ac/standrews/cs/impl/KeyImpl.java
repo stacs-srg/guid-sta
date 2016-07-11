@@ -51,14 +51,18 @@ public class KeyImpl implements IGUID, IPID {
      * @param key_value the value of the key
      */
     public KeyImpl(BigInteger key_value) throws GUIDGenerationException {
+        if (key_value == null) {
+            throw new GUIDGenerationException();
+        }
+
         try {
             this.key_value = key_value.remainder(KEYSPACE_SIZE);
-            
+
             // Allow for negative key value.
             if (this.key_value.compareTo(BigInteger.ZERO) < 0)
                 this.key_value = this.key_value.add(KEYSPACE_SIZE);
-            
-        } catch (Exception e) {
+
+        } catch (NumberFormatException e) {
             throw new GUIDGenerationException();
         }
     }
@@ -66,11 +70,11 @@ public class KeyImpl implements IGUID, IPID {
     /**
      * Creates a new key using a string representation of a BigInteger to base DEFAULT_TO_STRING_RADIX.
      *
-     * @param s the string value of the key
+     * @param string the string value of the key
      * @see #DEFAULT_TO_STRING_RADIX
      */
-    public KeyImpl(String s) throws GUIDGenerationException {
-        this(new BigInteger(s, DEFAULT_TO_STRING_RADIX));
+    public KeyImpl(String string) throws GUIDGenerationException {
+        this(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
     }
 
     //*********************** Key Methods ************************
