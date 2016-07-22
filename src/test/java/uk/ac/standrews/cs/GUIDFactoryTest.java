@@ -3,7 +3,7 @@ package uk.ac.standrews.cs;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.impl.ZeroID;
+import uk.ac.standrews.cs.impl.InvalidID;
 import uk.ac.standrews.cs.utils.StreamsUtils;
 
 import java.io.InputStream;
@@ -72,7 +72,7 @@ public class GUIDFactoryTest {
     public void randomGUIDTest() throws Exception {
         IGUID guid = GUIDFactory.generateRandomGUID();
         assertNotNull(guid);
-        assertNotEquals(guid, new ZeroID());
+        assertNotEquals(guid, new InvalidID());
     }
 
     @Test

@@ -18,4 +18,10 @@ public interface IKey extends Comparable {
      * @return a string representation of this key
      */
     String toString();
+
+    /**
+     *
+     * @return true if this key is not valid
+     */
+    boolean isInvalid();
 }

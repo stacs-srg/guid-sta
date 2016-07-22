@@ -8,17 +8,22 @@ import java.math.BigInteger;
 /**
  * @author Simone I. Conte "sic2@st-andrews.ac.uk"
  */
-public class ZeroID implements IGUID, IPID {
+public class InvalidID implements IGUID, IPID {
 
     public BigInteger key_value;
 
-    public ZeroID() {
+    public InvalidID() {
         key_value = new BigInteger("0");
     }
 
     @Override
     public BigInteger bigIntegerRepresentation() {
         return key_value;
+    }
+
+    @Override
+    public boolean isInvalid() {
+        return true;
     }
 
     @Override

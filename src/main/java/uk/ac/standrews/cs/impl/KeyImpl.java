@@ -97,6 +97,11 @@ public class KeyImpl implements IGUID, IPID {
         return toString(DEFAULT_TO_STRING_RADIX, DEFAULT_TO_STRING_LENGTH);
     }
 
+    @Override
+    public boolean isInvalid() {
+        return false;
+    }
+
     /**
      * Returns a string representation of the key value.
      *

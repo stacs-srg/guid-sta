@@ -3,9 +3,9 @@ package uk.ac.standrews.cs;/*
  */
 
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
+import uk.ac.standrews.cs.impl.InvalidID;
 import uk.ac.standrews.cs.impl.KeyImpl;
 import uk.ac.standrews.cs.impl.SHA1KeyFactory;
-import uk.ac.standrews.cs.impl.ZeroID;
 
 import java.io.InputStream;
 
@@ -16,7 +16,7 @@ public class GUIDFactory {
             return (KeyImpl) SHA1KeyFactory.generateRandomKey();
         } catch (GUIDGenerationException e) {
             e.printStackTrace();
-            return new ZeroID();
+            return new InvalidID();
         }
     }
     

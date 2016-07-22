@@ -1,7 +1,7 @@
 package uk.ac.standrews.cs;
 
 import org.testng.annotations.Test;
-import uk.ac.standrews.cs.impl.ZeroID;
+import uk.ac.standrews.cs.impl.InvalidID;
 
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.AssertJUnit.assertNotNull;
@@ -16,7 +16,7 @@ public class PIDFactoryTest {
 
         IPID pid = PIDFactory.generateRandomPID();
         assertNotNull(pid);
-        assertNotEquals(pid, new ZeroID());
+        assertNotEquals(pid, new InvalidID());
     }
 
 }
