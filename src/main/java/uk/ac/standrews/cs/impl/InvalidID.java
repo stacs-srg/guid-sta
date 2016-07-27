@@ -1,6 +1,7 @@
 package uk.ac.standrews.cs.impl;
 
 import uk.ac.standrews.cs.IGUID;
+import uk.ac.standrews.cs.IKey;
 import uk.ac.standrews.cs.IPID;
 
 import java.math.BigInteger;

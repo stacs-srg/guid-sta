@@ -5,7 +5,6 @@ package uk.ac.standrews.cs;/*
 
 import org.testng.annotations.Test;
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.impl.IKey;
 import uk.ac.standrews.cs.impl.SHA1KeyFactory;
 
 import static org.testng.Assert.assertNotEquals;

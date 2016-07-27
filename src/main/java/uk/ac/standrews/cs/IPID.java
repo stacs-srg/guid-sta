@@ -3,8 +3,6 @@
  */
 package uk.ac.standrews.cs;
 
-import uk.ac.standrews.cs.impl.IKey;
-
 /**
  * @author al
  */

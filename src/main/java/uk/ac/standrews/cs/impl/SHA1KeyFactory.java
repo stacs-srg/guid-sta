@@ -6,6 +6,7 @@ package uk.ac.standrews.cs.impl;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+import uk.ac.standrews.cs.IKey;
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
 
 import java.io.IOException;
