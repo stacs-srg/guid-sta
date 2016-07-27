@@ -53,3 +53,6 @@ IPID pid = PIDFactory.generateRandomPID();
 
 ## Authors
 
+This project originates from the **asa** project developed by Alan Dearle, Graham Kirby, and Stuart Norcross (University of St Andrews).
+
+This project is currently maintained by Simone I. Conte (University of St Andrews).
