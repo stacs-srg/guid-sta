@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.impl; // TODO - move to guid-sta
+package uk.ac.standrews.cs.impl;
 
 /*
  * RandomGUID

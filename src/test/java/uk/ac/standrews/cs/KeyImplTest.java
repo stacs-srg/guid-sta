@@ -3,9 +3,9 @@ package uk.ac.standrews.cs;/*
  */
 
 
-import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.impl.KeyImpl;
 import org.testng.annotations.Test;
+import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
+import uk.ac.standrews.cs.impl.keys.KeyImpl;
 
 import java.math.BigInteger;
 
@@ -79,7 +79,6 @@ public class KeyImplTest {
      */
     @Test
     public void testToString() {
-        
         assertEquals(k1.toString(), "ffffffffffffffffffffffffffffffffffffffff");
         assertEquals(k2.toString(), "0000000000000000000000000000000000000000");
         assertEquals(k3.toString(), "0000000000000000000000000000000000000001");

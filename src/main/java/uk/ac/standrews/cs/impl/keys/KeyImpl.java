@@ -1,9 +1,10 @@
-package uk.ac.standrews.cs.impl;
+package uk.ac.standrews.cs.impl.keys;
 
 import uk.ac.standrews.cs.IGUID;
 import uk.ac.standrews.cs.IKey;
 import uk.ac.standrews.cs.IPID;
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
+import uk.ac.standrews.cs.impl.RadixMethods;
 
 import java.math.BigInteger;
 
@@ -15,43 +16,30 @@ import java.math.BigInteger;
  */
 public class KeyImpl implements IGUID, IPID {
 
-    //********************** Constants ***********************
-    
-    public static final int KEYLENGTH = 160;
-
+    private static final int KEYLENGTH = 160;
     private static final BigInteger TWO = BigInteger.ONE.add(BigInteger.ONE);
 
-    public static final BigInteger KEYSPACE_SIZE = TWO.pow(KEYLENGTH);
-    
-    /**
-     * The radix used in converting the key's value to a string.
-     */
-    public static final int DEFAULT_TO_STRING_RADIX = 16;
-    
-    /**
-     * The length of the key's value in digits.
-     */
-    public static final int DEFAULT_TO_STRING_LENGTH = 40;
+    private static final int DEFAULT_TO_STRING_RADIX = 16; // The radix used in converting the key's value to a string.
+    private static final int DEFAULT_TO_STRING_LENGTH = 40; // The length of the key's value in digits.
 
-    //************************ Fields ************************
+    public static BigInteger KEYSPACE_SIZE;
+    private BigInteger key_value;
 
-    public BigInteger key_value;
-
-    //********************* Constructors *********************
-    
     /**
-     * Default constructor for use in deserialization.
+     * Default constructor - initialises the keyspace
      */
-    public KeyImpl () {
-    	/* This constructor deliberately blank... */
+    private KeyImpl () {
+        KEYSPACE_SIZE = TWO.pow(getKeylength());
     }
-    
+
     /**
      * Creates a new key using the given value modulo the key space size.
      * 
      * @param key_value the value of the key
      */
     public KeyImpl(BigInteger key_value) throws GUIDGenerationException {
+        this();
+
         if (key_value == null) {
             throw new GUIDGenerationException();
         }
@@ -78,8 +66,6 @@ public class KeyImpl implements IGUID, IPID {
         this(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
     }
 
-    //*********************** Key Methods ************************
-
     /**
      * Returns the representation of this key.
      *
@@ -95,7 +81,7 @@ public class KeyImpl implements IGUID, IPID {
      * @return a string representation of the key value using the default radix and length
      */
     public String toString() {
-        return toString(DEFAULT_TO_STRING_RADIX, DEFAULT_TO_STRING_LENGTH);
+        return toString(DEFAULT_TO_STRING_RADIX, getStringLength());
     }
 
     @Override
@@ -111,7 +97,7 @@ public class KeyImpl implements IGUID, IPID {
      */
     public String toString(int radix) {
         int bits_per_digit = RadixMethods.bitsNeededTORepresent(radix);
-        int toStringLength = KEYLENGTH / bits_per_digit;
+        int toStringLength = getKeylength() / bits_per_digit;
 
         return toString(radix, toStringLength);
     }
@@ -162,5 +148,13 @@ public class KeyImpl implements IGUID, IPID {
 
     public int hashCode(){
         return toString().hashCode();
+    }
+
+    protected int getKeylength() {
+        return KEYLENGTH;
+    }
+
+    protected int getStringLength() {
+        return DEFAULT_TO_STRING_LENGTH;
     }
 }

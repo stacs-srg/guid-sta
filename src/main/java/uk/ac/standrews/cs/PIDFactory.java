@@ -5,15 +5,15 @@ package uk.ac.standrews.cs;
 
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
 import uk.ac.standrews.cs.impl.InvalidID;
-import uk.ac.standrews.cs.impl.KeyImpl;
-import uk.ac.standrews.cs.impl.SHA1KeyFactory;
+import uk.ac.standrews.cs.impl.SHAKeyFactory;
+import uk.ac.standrews.cs.impl.keys.KeyImpl;
 
 public class PIDFactory {
     
     public static IPID generateRandomPID() {
 
         try {
-            return (KeyImpl) SHA1KeyFactory.generateRandomKey();
+            return (KeyImpl) SHAKeyFactory.generateRandomKey();
         } catch (GUIDGenerationException e) {
             e.printStackTrace();
             return new InvalidID();

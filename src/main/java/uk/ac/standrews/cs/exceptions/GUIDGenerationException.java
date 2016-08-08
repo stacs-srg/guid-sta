@@ -5,5 +5,11 @@ package uk.ac.standrews.cs.exceptions;
  */
 public class GUIDGenerationException extends Exception {
 
-    public GUIDGenerationException() {}
+    public GUIDGenerationException() {
+        super();
+    }
+
+    public GUIDGenerationException(String message) {
+        super(message);
+    }
 }
