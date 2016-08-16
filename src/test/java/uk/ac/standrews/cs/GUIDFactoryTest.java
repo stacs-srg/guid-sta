@@ -1,6 +1,5 @@
 package uk.ac.standrews.cs;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
@@ -9,6 +8,7 @@ import uk.ac.standrews.cs.impl.SHAKeyFactory;
 import uk.ac.standrews.cs.utils.StreamsUtils;
 
 import java.io.InputStream;
+import java.util.LinkedHashSet;
 
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.AssertJUnit.assertEquals;
@@ -81,9 +81,19 @@ public class GUIDFactoryTest {
     }
 
     @Test
+    public void manyRandomGUIDTest() throws Exception {
+        LinkedHashSet<IGUID> guids = new LinkedHashSet<>();
+        for(int i = 0; i < 100; i++) {
+            guids.add(GUIDFactory.generateRandomGUID());
+        }
+
+        assertEquals(100, guids.size());
+    }
+
+    @Test
     public void recreateGUIDTest() throws GUIDGenerationException {
         IGUID guid = GUIDFactory.recreateGUID(TEST_STRING_HASHED);
-        Assert.assertEquals(guid.toString(), TEST_STRING_HASHED);
+        assertEquals(guid.toString(), TEST_STRING_HASHED);
     }
 
     @Test (expectedExceptions = GUIDGenerationException.class)

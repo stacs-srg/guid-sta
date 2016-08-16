@@ -10,6 +10,8 @@ import uk.ac.standrews.cs.impl.keys.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.SecureRandom;
+import java.util.Random;
 
 import static uk.ac.standrews.cs.impl.SHAKeyFactory.SHA_ALGORITHMS.SHA1;
 
@@ -109,9 +111,9 @@ public class SHAKeyFactory {
      * @return a key with a pseudo-random value
      */
     public static IKey generateRandomKey() throws GUIDGenerationException {
-        String seed = String.valueOf(System.currentTimeMillis()) +
-                String.valueOf(Runtime.getRuntime().freeMemory());
-        return generateKey(seed);
+        Random rand = new SecureRandom();
+        long seed = rand.nextLong();
+        return generateKey(String.valueOf(seed));
     }
 
     private static IKey hash(byte[] source) throws GUIDGenerationException {
