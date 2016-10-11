@@ -191,7 +191,7 @@ public class RandomGUID {
             valueAfterMD5 = sb.toString();
 
         } catch (Exception e) {
-            System.out.println("Error:" + e);
+            System.out.println("Error: " + e);
         }
     }
 
