@@ -19,6 +19,9 @@
         <!-- http://stackoverflow.com/questions/3017695/how-to-configure-encoding-in-maven -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- The directory on Beast where the files are deployed after a successful Jenkins build.-->
+        <repository.home>file:///data/jenkins/remote_maven_repository/</repository.home>
     </properties>
 
     <build>
@@ -37,11 +40,22 @@
 
     <distributionManagement>
         <repository>
-            <id>uk.ac.standrews.cs.maven.repository</id>
-            <name>School of Computer Science Maven Repository</name>
-            <url>http://maven.cs.st-andrews.ac.uk</url>
+            <id>uk.ac.standrews.cs.jenkins.distribution.management</id>
+            <name>Jenkins Distribution Management</name>
+            <url>${repository.home}</url>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>uk.ac.standrews.cs.maven.repository</id>
+            <name>School of Computer Science Maven Repository</name>
+            <url>http://maven.cs.st-andrews.ac.uk/</url>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
