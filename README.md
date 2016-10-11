@@ -1,7 +1,5 @@
 # guid-sta
 
-<img src="https://beast.cs.st-andrews.ac.uk/teamcity/app/rest/builds/buildType:(id:sos_GuidSta)/statusIcon" width="60">
-
 `guid-sta` is a small and simple java utility library that simplifies the process of generating GUIDs and PIDs.
 
 ## Usage
