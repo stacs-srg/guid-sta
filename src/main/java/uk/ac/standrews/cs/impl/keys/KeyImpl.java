@@ -1,5 +1,7 @@
 package uk.ac.standrews.cs.impl.keys;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import uk.ac.standrews.cs.IGUID;
 import uk.ac.standrews.cs.IKey;
 import uk.ac.standrews.cs.IPID;
@@ -7,6 +9,7 @@ import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
 import uk.ac.standrews.cs.impl.RadixMethods;
 
 import java.math.BigInteger;
+import java.util.Base64;
 
 /**
  * Implementation of key.
@@ -24,22 +27,15 @@ public class KeyImpl implements IGUID, IPID {
 
     public static BigInteger KEYSPACE_SIZE;
     private BigInteger key_value;
+    private byte[] key_value_bytes;
 
     /**
      * Default constructor - initialises the keyspace
      */
-    private KeyImpl () {
+    private KeyImpl () {}
+
+    private void init(BigInteger key_value) throws GUIDGenerationException {
         KEYSPACE_SIZE = TWO.pow(getKeylength());
-    }
-
-    /**
-     * Creates a new key using the given value modulo the key space size.
-     * 
-     * @param key_value the value of the key
-     */
-    public KeyImpl(BigInteger key_value) throws GUIDGenerationException {
-        this();
-
         if (key_value == null) {
             throw new GUIDGenerationException();
         }
@@ -54,6 +50,24 @@ public class KeyImpl implements IGUID, IPID {
         } catch (NumberFormatException e) {
             throw new GUIDGenerationException();
         }
+
+        try {
+            String hexString = this.key_value.toString(DEFAULT_TO_STRING_RADIX);
+            if (hexString.length() % 2 == 1) hexString = "0"+hexString;
+            key_value_bytes = Hex.decodeHex(hexString.toCharArray());
+        } catch (DecoderException e) {
+            e.printStackTrace();
+            throw new GUIDGenerationException("Unable to decode key to hex array");
+        }
+    }
+
+    /**
+     * Creates a new key using the given value modulo the key space size.
+     * 
+     * @param key_value the value of the key
+     */
+    public KeyImpl(BigInteger key_value) throws GUIDGenerationException {
+        init(key_value);
     }
 
     /**
@@ -63,8 +77,19 @@ public class KeyImpl implements IGUID, IPID {
      * @see #DEFAULT_TO_STRING_RADIX
      */
     public KeyImpl(String string) throws GUIDGenerationException {
-        this(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
+        init(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
     }
+
+    public KeyImpl(String string, int base) throws GUIDGenerationException {
+        if (base == 16) {
+            init(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
+        } else if (base == 64) {
+            init(new BigInteger(Base64.getDecoder().decode(string)));
+        } else {
+            throw new GUIDGenerationException("Base " + base + " not supported");
+        }
+    }
+
 
     /**
      * Returns the representation of this key.
@@ -95,11 +120,17 @@ public class KeyImpl implements IGUID, IPID {
      * @param radix the radix
      * @return a string representation of the key value using the given radix
      */
+    @Override
     public String toString(int radix) {
-        int bits_per_digit = RadixMethods.bitsNeededTORepresent(radix);
-        int toStringLength = getKeylength() / bits_per_digit;
 
-        return toString(radix, toStringLength);
+        if (radix == 64) {
+            return toStringBase64();
+        } else {
+            int bits_per_digit = RadixMethods.bitsNeededTORepresent(radix);
+            int toStringLength = getKeylength() / bits_per_digit;
+
+            return toString(radix, toStringLength);
+        }
     }
 
     /**
@@ -108,11 +139,21 @@ public class KeyImpl implements IGUID, IPID {
      * @param radix the radix
      * @param stringLength the length to which the key representation should be padded
      * @return a string representation of the key value using the given radix
+     *
+     * NOTE: this function will work up to radix 32
      */
-    public String toString(int radix, int stringLength) {
-        StringBuffer result = new StringBuffer(key_value.toString(radix));
+    private String toString(int radix, int stringLength) {
+        return applyPadding(key_value.toString(radix), stringLength);
+    }
+
+    private String applyPadding(String string, int stringLength) {
+        StringBuilder result = new StringBuilder(string);
         while (result.length() < stringLength) result.insert(0, '0');
         return result.toString();
+    }
+
+    private String toStringBase64() {
+        return Base64.getEncoder().encodeToString(key_value_bytes);
     }
 
     /**

@@ -90,21 +90,7 @@ public class GUIDFactoryTest {
         assertEquals(100, guids.size());
     }
 
-    @Test
-    public void recreateGUIDTest() throws GUIDGenerationException {
-        IGUID guid = GUIDFactory.recreateGUID(TEST_STRING_HASHED);
-        assertEquals(guid.toString(), TEST_STRING_HASHED);
-    }
 
-    @Test (expectedExceptions = GUIDGenerationException.class)
-    public void recreateEmptyGUIDTest() throws GUIDGenerationException {
-        GUIDFactory.recreateGUID("");
-    }
-
-    @Test (expectedExceptions = GUIDGenerationException.class)
-    public void recreateNullGUIDTest() throws GUIDGenerationException {
-        GUIDFactory.recreateGUID(null);
-    }
 
     @Test
     public void generateGUID_abc_NIST_Test() throws Exception {

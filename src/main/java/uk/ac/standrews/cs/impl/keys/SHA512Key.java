@@ -14,6 +14,10 @@ public class SHA512Key extends KeyImpl {
         super(string);
     }
 
+    public SHA512Key(String string, int base) throws GUIDGenerationException {
+        super(string, base);
+    }
+
     @Override
     protected int getKeylength() {
         return KEYLENGTH;

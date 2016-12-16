@@ -58,31 +58,31 @@ public class KeyFactoryTest {
 
     @Test
     public void testRecreateKey() throws GUIDGenerationException {
-        IKey k1 = SHAKeyFactory.recreateKey("195e24370036a4062b0d325c03153a2b9fc9c92e");
+        IKey k1 = SHAKeyFactory.recreateKey("195e24370036a4062b0d325c03153a2b9fc9c92e", 16);
         assertEquals("195e24370036a4062b0d325c03153a2b9fc9c92e", k1.toString());
     }
 
     @Test
     public void testRecreateKeyOverflow() throws GUIDGenerationException {
-        IKey k1 = SHAKeyFactory.recreateKey("195e24370036a4062b0d325c03153a2b9fc9c92e1");
+        IKey k1 = SHAKeyFactory.recreateKey("195e24370036a4062b0d325c03153a2b9fc9c92e1", 16);
         assertEquals("95e24370036a4062b0d325c03153a2b9fc9c92e1", k1.toString());
     }
 
     @Test
     public void testRecreateKeyUpperCase() throws GUIDGenerationException {
-        IKey k1 = SHAKeyFactory.recreateKey("195E24370036A4062B0D325C03153A2B9FC9C92E");
+        IKey k1 = SHAKeyFactory.recreateKey("195E24370036A4062B0D325C03153A2B9FC9C92E", 16);
         assertEquals("195e24370036a4062b0d325c03153a2b9fc9c92e", k1.toString());
     }
 
     @Test (expectedExceptions = GUIDGenerationException.class)
     public void testRecreateKeyNull() throws GUIDGenerationException {
-        IKey k1 = SHAKeyFactory.recreateKey(null);
+        IKey k1 = SHAKeyFactory.recreateKey(null, 16);
         assertEquals("195e24370036a4062b0d325c03153a2b9fc9c92e", k1.toString());
     }
 
     @Test (expectedExceptions = GUIDGenerationException.class)
     public void testRecreateKeyEmpty() throws GUIDGenerationException {
-        IKey k1 = SHAKeyFactory.recreateKey("");
+        IKey k1 = SHAKeyFactory.recreateKey("", 16);
         assertEquals("195e24370036a4062b0d325c03153a2b9fc9c92e", k1.toString());
     }
 }

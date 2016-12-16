@@ -23,6 +23,11 @@ public class InvalidID implements IGUID, IPID {
     }
 
     @Override
+    public String toString(int base) {
+        return null;
+    }
+
+    @Override
     public boolean isInvalid() {
         return true;
     }

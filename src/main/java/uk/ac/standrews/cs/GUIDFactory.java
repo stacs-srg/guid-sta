@@ -20,8 +20,8 @@ public class GUIDFactory {
         }
     }
     
-    public static IGUID recreateGUID(String string) throws GUIDGenerationException {
-        return (KeyImpl) SHAKeyFactory.recreateKey(string);
+    public static IGUID recreateGUID(String string, int base) throws GUIDGenerationException {
+        return (KeyImpl) SHAKeyFactory.recreateKey(string, base);
     }
 
     public static IGUID generateGUID(String string) throws GUIDGenerationException {
@@ -43,9 +43,9 @@ public class GUIDFactory {
         }
     }
 
-    public static IGUID recreateGUID(SHAKeyFactory.SHA_ALGORITHMS algorithm, String string) throws GUIDGenerationException {
+    public static IGUID recreateGUID(SHAKeyFactory.SHA_ALGORITHMS algorithm, String string, int base) throws GUIDGenerationException {
         SHAKeyFactory.setSHAAlgorithm(algorithm);
-        return (KeyImpl) SHAKeyFactory.recreateKey(string);
+        return (KeyImpl) SHAKeyFactory.recreateKey(string, base);
     }
 
     public static IGUID generateGUID(SHAKeyFactory.SHA_ALGORITHMS algorithm, String string) throws GUIDGenerationException {

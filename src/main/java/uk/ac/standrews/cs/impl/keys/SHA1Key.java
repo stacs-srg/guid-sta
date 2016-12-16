@@ -14,6 +14,10 @@ public class SHA1Key extends KeyImpl {
         super(string);
     }
 
+    public SHA1Key(String string, int base) throws GUIDGenerationException {
+        super(string, base);
+    }
+
     @Override
     protected int getKeylength() {
         return KEYLENGTH;

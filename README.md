@@ -58,6 +58,7 @@ IPID pid = PIDFactory.generateRandomPID();
 
 - [ ] UUID
 - [ ] ETags
+- [ ] Allow different bases to be set
 
 
 ## Authors

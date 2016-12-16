@@ -14,6 +14,10 @@ public class SHA256Key extends KeyImpl {
         super(string);
     }
 
+    public SHA256Key(String string, int base) throws GUIDGenerationException {
+        super(string, base);
+    }
+
     @Override
     protected int getKeylength() {
         return KEYLENGTH;

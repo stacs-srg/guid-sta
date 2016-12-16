@@ -15,9 +15,16 @@ public interface IKey extends Comparable {
     BigInteger bigIntegerRepresentation();
     
     /**
-     * @return a string representation of this key
+     * @return a string representation of this key in base 16
      */
     String toString();
+
+    /**
+     *
+     * @param base the base must be a power of 2
+     @return a string representation of this key with the given base
+     */
+    String toString(int base);
 
     /**
      *

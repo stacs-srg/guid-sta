@@ -6,7 +6,10 @@ package uk.ac.standrews.cs.impl;
 import org.apache.commons.codec.digest.DigestUtils;
 import uk.ac.standrews.cs.IKey;
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.impl.keys.*;
+import uk.ac.standrews.cs.impl.keys.SHA1Key;
+import uk.ac.standrews.cs.impl.keys.SHA256Key;
+import uk.ac.standrews.cs.impl.keys.SHA384Key;
+import uk.ac.standrews.cs.impl.keys.SHA512Key;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,12 +67,22 @@ public class SHAKeyFactory {
      * @param string - the String representation of a serialised Key
      * @return a new Key using the parameter s as a long value
      */
-    public static IKey recreateKey(String string) throws GUIDGenerationException {
+    public static IKey recreateKey(String string, int base) throws GUIDGenerationException {
         if (string == null || string.isEmpty()) {
             throw new GUIDGenerationException();
         }
 
-        return new KeyImpl(string);
+        if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA1) {
+            return new SHA1Key(string, base);
+        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA256) {
+            return new SHA256Key(string, base);
+        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA384) {
+            return new SHA384Key(string, base);
+        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA512) {
+            return new SHA512Key(string, base);
+        } else {
+            throw new GUIDGenerationException("Unsupported sha algorithm: " + SHA_ALGORITHM);
+        }
     }
 
     /**
