@@ -24,6 +24,10 @@ public class GUIDFactory {
         return (KeyImpl) SHAKeyFactory.recreateKey(string, base);
     }
 
+    public static IGUID recreateGUID(String string) throws GUIDGenerationException {
+        return (KeyImpl) SHAKeyFactory.recreateKey(string, 16); // DEFAULT BASE - TODO - use constant
+    }
+
     public static IGUID generateGUID(String string) throws GUIDGenerationException {
         return (KeyImpl) SHAKeyFactory.generateKey(string);
     }
