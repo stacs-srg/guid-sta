@@ -4,87 +4,56 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>uk.ac.standrews.cs</groupId>
+    <parent>
+        <groupId>uk.ac.standrews.cs</groupId>
+        <artifactId>common-pom-2</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>guid-sta</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <name>guid-sta</name>
 
-    <properties>
-        <repository.type>hg</repository.type>
-        <repository.location>https://github.com/quicksilver-sta/guid-sta</repository.location>
-
-        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-        <java.version>1.8</java.version>
-        <commons-codec.version>1.10</commons-codec.version>
-        <testng.version>6.1.1</testng.version>
-        <apache-xmlbeans.version>2.6.0</apache-xmlbeans.version>
-
-        <!-- http://stackoverflow.com/questions/3017695/how-to-configure-encoding-in-maven -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <!-- The directory on Beast where the files are deployed after a successful Jenkins build.-->
-        <repository.home>file:///data/jenkins/remote_maven_repository/</repository.home>
-    </properties>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <scm>
-        <connection>scm:${repository.type}:${repository.location}</connection>
-        <developerConnection>scm:${repository.type}:${repository.location}</developerConnection>
-        <url>${repository.location}</url>
-    </scm>
-    <distributionManagement>
-        <repository>
-            <id>uk.ac.standrews.cs.jenkins.distribution.management</id>
-            <name>Jenkins Distribution Management</name>
-            <url>${repository.home}</url>
-        </repository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>uk.ac.standrews.cs.maven.repository</id>
-            <name>School of Computer Science Maven Repository</name>
-            <url>http://maven.cs.st-andrews.ac.uk/</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
+    <description>Utility classes</description>
+    <url>https://github.com/stacs-srg/guid-sta</url>
+    <inceptionYear>2016</inceptionYear>
 
     <dependencies>
+
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>${commons-codec.version}</version>
+            <version>1.10</version>
         </dependency>
 
         <!-- TEST dependencies -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
+            <version>6.1.1</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.apache.xmlbeans</groupId>
             <artifactId>xmlbeans</artifactId>
-            <version>${apache-xmlbeans.version}</version>
+            <version>2.6.0</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
+
+    <repositories>
+
+        <!-- Repository to which this module is deployed, and others retrieved from.                 -->
+        <!-- This has to be replicated from the parent POM so the parent POM can be found.           -->
+        <repository>
+            <id>uk.ac.standrews.cs.maven.repository</id>
+            <name>School of Computer Science Maven Repository</name>
+            <url>http://maven.cs.st-andrews.ac.uk/</url>
+        </repository>
+
+    </repositories>
 
 </project>
