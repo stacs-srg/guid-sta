@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/stacs-srg/guid-sta.svg?style=svg&circle-token=15265a5530122a6be6e5473a2ed7176f1a385883)](https://circleci.com/gh/stacs-srg/guid-sta)
+
 # guid-sta
 
 `guid-sta` is a small and simple java utility library that simplifies the process of generating GUIDs and PIDs.
