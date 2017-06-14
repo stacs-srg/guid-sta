@@ -3,14 +3,15 @@ package uk.ac.standrews.cs;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.impl.InvalidID;
 import uk.ac.standrews.cs.impl.SHAKeyFactory;
+import uk.ac.standrews.cs.impl.keys.InvalidID;
 import uk.ac.standrews.cs.utils.StreamsUtils;
 
 import java.io.InputStream;
 import java.util.LinkedHashSet;
 
 import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
@@ -143,4 +144,11 @@ public class GUIDFactoryTest {
         assertEquals("8e959b75dae313da8cf4f72814fc143f8f7779c6eb9f7fa17299aeadb6889018501d289e4900f7e4331b99dec4b5433ac7d329eeb6dd26545e96e55b874be909", guid.toString());
     }
 
+    @Test
+    public void shortStringTest() throws Exception {
+        InputStream inputStreamFake = StreamsUtils.StringToInputStream(TEST_STRING);
+        IGUID guid = GUIDFactory.generateGUID(inputStreamFake);
+
+        assertTrue(TEST_STRING_HASHED.startsWith(guid.toShortString()));
+    }
 }

@@ -3,8 +3,8 @@ package uk.ac.standrews.cs;/*
  */
 
 import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.impl.InvalidID;
 import uk.ac.standrews.cs.impl.SHAKeyFactory;
+import uk.ac.standrews.cs.impl.keys.InvalidID;
 import uk.ac.standrews.cs.impl.keys.KeyImpl;
 
 import java.io.InputStream;
@@ -15,7 +15,6 @@ public class GUIDFactory {
         try {
             return (KeyImpl) SHAKeyFactory.generateRandomKey();
         } catch (GUIDGenerationException e) {
-            e.printStackTrace();
             return new InvalidID();
         }
     }
@@ -42,7 +41,6 @@ public class GUIDFactory {
         try {
             return (KeyImpl) SHAKeyFactory.generateRandomKey();
         } catch (GUIDGenerationException e) {
-            e.printStackTrace();
             return new InvalidID();
         }
     }

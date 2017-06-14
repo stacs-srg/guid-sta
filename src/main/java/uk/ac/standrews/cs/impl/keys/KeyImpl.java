@@ -32,7 +32,7 @@ public class KeyImpl implements IGUID, IPID {
     /**
      * Default constructor - initialises the keyspace
      */
-    private KeyImpl () {}
+    private KeyImpl() {}
 
     private void init(BigInteger key_value) throws GUIDGenerationException {
         KEYSPACE_SIZE = TWO.pow(getKeylength());

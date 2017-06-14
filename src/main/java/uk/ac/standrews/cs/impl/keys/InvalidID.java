@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.impl;
+package uk.ac.standrews.cs.impl.keys;
 
 import uk.ac.standrews.cs.IGUID;
 import uk.ac.standrews.cs.IKey;
