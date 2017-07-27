@@ -1,11 +1,11 @@
-package uk.ac.standrews.cs;/*
+package uk.ac.standrews.cs.guid;/*
  * Created on 19-Aug-2005
  */
 
-import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.impl.SHAKeyFactory;
-import uk.ac.standrews.cs.impl.keys.InvalidID;
-import uk.ac.standrews.cs.impl.keys.KeyImpl;
+import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
+import uk.ac.standrews.cs.guid.impl.SHAKeyFactory;
+import uk.ac.standrews.cs.guid.impl.keys.InvalidID;
+import uk.ac.standrews.cs.guid.impl.keys.KeyImpl;
 
 import java.io.InputStream;
 

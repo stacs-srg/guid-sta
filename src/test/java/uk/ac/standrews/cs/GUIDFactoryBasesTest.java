@@ -2,7 +2,9 @@ package uk.ac.standrews.cs;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import uk.ac.standrews.cs.impl.SHAKeyFactory;
+import uk.ac.standrews.cs.guid.GUIDFactory;
+import uk.ac.standrews.cs.guid.IGUID;
+import uk.ac.standrews.cs.guid.impl.SHAKeyFactory;
 
 import static org.testng.AssertJUnit.assertEquals;
 

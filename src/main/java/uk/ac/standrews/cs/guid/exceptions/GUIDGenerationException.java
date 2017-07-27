@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.exceptions;
+package uk.ac.standrews.cs.guid.exceptions;
 
 /**
  * @author Simone I. Conte "sic2@st-andrews.ac.uk"

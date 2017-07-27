@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.impl;
+package uk.ac.standrews.cs.guid.impl;
 
 /*
  * RandomGUID

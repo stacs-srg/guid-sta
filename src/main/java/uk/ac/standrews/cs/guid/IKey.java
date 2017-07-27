@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs;
+package uk.ac.standrews.cs.guid;
 
 import java.math.BigInteger;
 

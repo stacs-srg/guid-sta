@@ -1,22 +1,22 @@
 /*
  * Created on 26-Oct-2004
  */
-package uk.ac.standrews.cs.impl;
+package uk.ac.standrews.cs.guid.impl;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import uk.ac.standrews.cs.IKey;
-import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.impl.keys.SHA1Key;
-import uk.ac.standrews.cs.impl.keys.SHA256Key;
-import uk.ac.standrews.cs.impl.keys.SHA384Key;
-import uk.ac.standrews.cs.impl.keys.SHA512Key;
+import uk.ac.standrews.cs.guid.IKey;
+import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
+import uk.ac.standrews.cs.guid.impl.keys.SHA1Key;
+import uk.ac.standrews.cs.guid.impl.keys.SHA256Key;
+import uk.ac.standrews.cs.guid.impl.keys.SHA384Key;
+import uk.ac.standrews.cs.guid.impl.keys.SHA512Key;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.SecureRandom;
 import java.util.Random;
 
-import static uk.ac.standrews.cs.impl.SHAKeyFactory.SHA_ALGORITHMS.SHA1;
+import static uk.ac.standrews.cs.guid.impl.SHAKeyFactory.SHA_ALGORITHMS.SHA1;
 
 /**
  * Provides various ways to generate uk.ac.standrews.cs.impl.

@@ -4,8 +4,8 @@ package uk.ac.standrews.cs;/*
 
 
 import org.testng.annotations.Test;
-import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.impl.keys.KeyImpl;
+import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
+import uk.ac.standrews.cs.guid.impl.keys.KeyImpl;
 
 import java.math.BigInteger;
 

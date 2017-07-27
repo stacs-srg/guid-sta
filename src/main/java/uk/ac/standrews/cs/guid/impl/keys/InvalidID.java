@@ -1,8 +1,8 @@
-package uk.ac.standrews.cs.impl.keys;
+package uk.ac.standrews.cs.guid.impl.keys;
 
-import uk.ac.standrews.cs.IGUID;
-import uk.ac.standrews.cs.IKey;
-import uk.ac.standrews.cs.IPID;
+import uk.ac.standrews.cs.guid.IGUID;
+import uk.ac.standrews.cs.guid.IKey;
+import uk.ac.standrews.cs.guid.IPID;
 
 import java.math.BigInteger;
 

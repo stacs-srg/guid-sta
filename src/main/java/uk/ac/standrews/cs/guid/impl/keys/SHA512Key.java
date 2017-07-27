@@ -1,6 +1,6 @@
-package uk.ac.standrews.cs.impl.keys;
+package uk.ac.standrews.cs.guid.impl.keys;
 
-import uk.ac.standrews.cs.exceptions.GUIDGenerationException;
+import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 
 /**
  * @author Simone I. Conte "sic2@st-andrews.ac.uk"
