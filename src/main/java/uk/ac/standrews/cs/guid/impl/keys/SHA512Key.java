@@ -1,7 +1,6 @@
 package uk.ac.standrews.cs.guid.impl.keys;
 
 import uk.ac.standrews.cs.guid.ALGORITHM;
-import uk.ac.standrews.cs.guid.BASE;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 
 /**
@@ -16,8 +15,8 @@ public class SHA512Key extends KeyImpl {
         super(ALGORITHM.SHA512, string);
     }
 
-    public SHA512Key(String string, BASE base) throws GUIDGenerationException {
-        super(ALGORITHM.SHA512, string, base);
+    public SHA512Key(byte[] input) throws GUIDGenerationException {
+        super(ALGORITHM.SHA512, input);
     }
 
     @Override

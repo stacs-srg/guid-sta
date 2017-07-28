@@ -1,15 +1,16 @@
 package uk.ac.standrews.cs.guid.impl.keys;
 
-import uk.ac.standrews.cs.guid.*;
+import uk.ac.standrews.cs.guid.ALGORITHM;
+import uk.ac.standrews.cs.guid.BASE;
+import uk.ac.standrews.cs.guid.IGUID;
+import uk.ac.standrews.cs.guid.IKey;
 
 import java.math.BigInteger;
-
-import static uk.ac.standrews.cs.guid.BASE.INVALID;
 
 /**
  * @author Simone I. Conte "sic2@st-andrews.ac.uk"
  */
-public class InvalidID implements IGUID, IPID {
+public class InvalidID implements IGUID {
 
     public BigInteger key_value;
 
@@ -23,17 +24,17 @@ public class InvalidID implements IGUID, IPID {
     }
 
     @Override
-    public BASE base() {
-        return INVALID;
-    }
-
-    @Override
     public BigInteger bigIntegerRepresentation() {
         return key_value;
     }
 
     @Override
-    public String toString(int base) {
+    public byte[] bytes() {
+        return new byte[0];
+    }
+
+    @Override
+    public String toString(BASE base) {
         return null;
     }
 

@@ -1,9 +1,7 @@
 package uk.ac.standrews.cs.guid;
 
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.guid.impl.SHAKeyFactory;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -12,70 +10,77 @@ import static org.testng.AssertJUnit.assertEquals;
  */
 public class GUIDFactoryRecreateGUIDsTest {
 
-    public static final String TEST_STRING_HASHED = "984816fd329622876e14907634264e6f332e9fb3";
-
-    @BeforeMethod
-    public void setUp() throws GUIDGenerationException {
-        // Make sure that the default SHA algorithm is set
-        SHAKeyFactory.setSHAAlgorithm(ALGORITHM.SHA1);
-    }
-
     @Test
     public void recreateGUIDTest() throws GUIDGenerationException {
-        IGUID guid = GUIDFactory.recreateGUID("984816fd329622876e14907634264e6f332e9fb3", BASE.HEX);
+        IGUID guid = GUIDFactory.recreateGUID("SHA1:16:984816fd329622876e14907634264e6f332e9fb3");
         assertEquals(guid.toString(), "984816fd329622876e14907634264e6f332e9fb3");
     }
 
     @Test
     public void recreateGUIDFromMultihashTest() throws GUIDGenerationException {
         IGUID guid = GUIDFactory.recreateGUID("SHA1:16:984816fd329622876e14907634264e6f332e9fb3");
-        assertEquals(guid.toString(), "984816fd329622876e14907634264e6f332e9fb3");
+        assertEquals( "984816fd329622876e14907634264e6f332e9fb3", guid.toString());
     }
 
     @Test (expectedExceptions = GUIDGenerationException.class)
-    public void recreateGUIDWrongBaseTest() throws GUIDGenerationException {
-        IGUID guid = GUIDFactory.recreateGUID(TEST_STRING_HASHED, BASE.INVALID);
+    public void recreateGUIDWrongMultihashTest_0() throws GUIDGenerationException {
+        GUIDFactory.recreateGUID("SHA1:16");
+    }
+
+    @Test (expectedExceptions = GUIDGenerationException.class)
+    public void recreateGUIDWrongMultihashTest_1() throws GUIDGenerationException {
+        GUIDFactory.recreateGUID("984816fd329622876e14907634264e6f332e9fb3");
+    }
+
+    @Test (expectedExceptions = GUIDGenerationException.class)
+    public void recreateGUIDWrongMultihashTest_2() throws GUIDGenerationException {
+        GUIDFactory.recreateGUID("SHA1:10:984816fd329622876e14907634264e6f332e9fb3");
+    }
+
+    @Test (expectedExceptions = GUIDGenerationException.class)
+    public void recreateGUIDWrongMultihashTest_3() throws GUIDGenerationException {
+        GUIDFactory.recreateGUID("SHA1:984816fd329622876e14907634264e6f332e9fb3");
     }
 
     @Test (expectedExceptions = GUIDGenerationException.class)
     public void recreateEmptyGUIDTest() throws GUIDGenerationException {
-        GUIDFactory.recreateGUID("", BASE.HEX);
-    }
-
-    @Test (expectedExceptions = GUIDGenerationException.class)
-    public void recreateEmptyGUIDBase64Test() throws GUIDGenerationException {
-        GUIDFactory.recreateGUID("", BASE.BASE_64);
+        GUIDFactory.recreateGUID("");
     }
 
     @Test (expectedExceptions = GUIDGenerationException.class)
     public void recreateNullGUIDTest() throws GUIDGenerationException {
-        GUIDFactory.recreateGUID(null, BASE.HEX);
-    }
-
-    @Test (expectedExceptions = GUIDGenerationException.class)
-    public void recreateNullGUIDBase64Test() throws GUIDGenerationException {
-        GUIDFactory.recreateGUID(null, BASE.BASE_64);
-    }
-
-    @Test (expectedExceptions = GUIDGenerationException.class)
-    public void recreateNullGUIDBase10Test() throws GUIDGenerationException {
-        GUIDFactory.recreateGUID(null, BASE.INVALID);
+        GUIDFactory.recreateGUID(null);
     }
 
     @Test
-    public void recreateGUID_abc_NIST_Base64_Test() throws Exception {
-        IGUID guid = GUIDFactory.recreateGUID("qZk+NkcGgWq6PiVxeFDCbJzQ2J0=", BASE.BASE_64);
-        assertEquals("qZk+NkcGgWq6PiVxeFDCbJzQ2J0=", guid.toString(64));
-
-        guid = GUIDFactory.recreateGUID(ALGORITHM.SHA256, "ungWv48Bz+pBQUDeXa4iI7ADYaOWF3qctBD/YfIAFa0=", BASE.BASE_64);
-        assertEquals("ungWv48Bz+pBQUDeXa4iI7ADYaOWF3qctBD/YfIAFa0=", guid.toString(64));
-
-        guid = GUIDFactory.recreateGUID(ALGORITHM.SHA512, "jpWbddrjE9qM9PcoFPwUP493ecbrn3+hcpmurbaIkBhQHSieSQD35DMbmd7EtUM6x9Mp7rbdJlReluVbh0vpCQ==", BASE.BASE_64);
-        assertEquals("jpWbddrjE9qM9PcoFPwUP493ecbrn3+hcpmurbaIkBhQHSieSQD35DMbmd7EtUM6x9Mp7rbdJlReluVbh0vpCQ==", guid.toString(64));
+    public void recreateGUID_SHA1_256_abc_NIST_Test() throws Exception {
+        IGUID guid = GUIDFactory.recreateGUID("SHA256:16:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
+        assertEquals("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad", guid.toString());
     }
 
     @Test
-    public void recreateFromMultiHash() {
+    public void recreateGUID_SHA1_abc_NIST_Base64_Test() throws Exception {
+        IGUID guid = GUIDFactory.recreateGUID("SHA1:64:qZk+NkcGgWq6PiVxeFDCbJzQ2J0=");
+        assertEquals("qZk+NkcGgWq6PiVxeFDCbJzQ2J0=", guid.toString(BASE.BASE_64));
+    }
 
+    @Test
+    public void recreateGUID_SHA256_abc_NIST_Base64_Test() throws Exception {
+
+        IGUID guid = GUIDFactory.recreateGUID("SHA256:64:ungWv48Bz+pBQUDeXa4iI7ADYaOWF3qctBD/YfIAFa0=");
+        assertEquals("ungWv48Bz+pBQUDeXa4iI7ADYaOWF3qctBD/YfIAFa0=", guid.toString(BASE.BASE_64));
+    }
+    @Test
+    public void recreateGUID_SHA512_abc_NIST_Base64_Test() throws Exception {
+
+        IGUID guid = GUIDFactory.recreateGUID("SHA512:64:jpWbddrjE9qM9PcoFPwUP493ecbrn3+hcpmurbaIkBhQHSieSQD35DMbmd7EtUM6x9Mp7rbdJlReluVbh0vpCQ==");
+        assertEquals("jpWbddrjE9qM9PcoFPwUP493ecbrn3+hcpmurbaIkBhQHSieSQD35DMbmd7EtUM6x9Mp7rbdJlReluVbh0vpCQ==", guid.toString(BASE.BASE_64));
+    }
+
+    @Test
+    public void recreateGUID_SHA1_abc_CANON_Test() throws GUIDGenerationException {
+
+        IGUID guid = GUIDFactory.recreateGUID("SHA1:1:A9993E36-4706-816A-BA3E-25717850C26C9CD0D89D");
+        assertEquals(guid.toString(), "a9993e364706816aba3e25717850c26c9cd0d89d");
     }
 }

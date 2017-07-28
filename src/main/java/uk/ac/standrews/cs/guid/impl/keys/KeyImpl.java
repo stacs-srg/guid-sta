@@ -2,11 +2,14 @@ package uk.ac.standrews.cs.guid.impl.keys;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import uk.ac.standrews.cs.guid.*;
+import uk.ac.standrews.cs.guid.ALGORITHM;
+import uk.ac.standrews.cs.guid.BASE;
+import uk.ac.standrews.cs.guid.IGUID;
+import uk.ac.standrews.cs.guid.IKey;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.guid.impl.RadixMethods;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Base64;
 
 /**
@@ -15,7 +18,7 @@ import java.util.Base64;
  * @author stuart, al, graham, sja7 - original authors
  * @author sic2 - removed p2p dependencies, enabled multi-bases and multi-algorithms
  */
-public class KeyImpl implements IGUID, IPID {
+public class KeyImpl implements IGUID {
 
     private static final int KEYLENGTH = 160;
     private static final BigInteger TWO = BigInteger.ONE.add(BigInteger.ONE);
@@ -23,64 +26,54 @@ public class KeyImpl implements IGUID, IPID {
     private static final int DEFAULT_TO_STRING_RADIX = BASE.HEX.getVal(); // The radix used in converting the key's value to a string.
     private static final int DEFAULT_TO_STRING_LENGTH = 40; // The length of the key's value in digits.
 
-    public static BigInteger KEYSPACE_SIZE;
-    private BigInteger key_value;
     private byte[] key_value_bytes;
+    public static BigInteger KEYSPACE_SIZE;
+    private BigInteger bigInteger;
 
     private ALGORITHM algorithm;
-    private BASE base;
 
     /**
      * Default constructor - initialises the keyspace
      */
     private KeyImpl() {}
 
-    private void init(BigInteger key_value) throws GUIDGenerationException {
+    private KeyImpl(byte[] key_value_bytes) {
+        this.key_value_bytes = key_value_bytes;
+
+        String stringValue = new String(Hex.encodeHex(key_value_bytes));
+        bigInteger = new BigInteger(stringValue, DEFAULT_TO_STRING_RADIX);
+
         KEYSPACE_SIZE = TWO.pow(getKeylength());
-        if (key_value == null) {
-            throw new GUIDGenerationException();
-        }
+        bigInteger = bigInteger.remainder(KEYSPACE_SIZE);
+
+        // Allow for negative key value.
+        if (bigInteger.compareTo(BigInteger.ZERO) < 0)
+            bigInteger = bigInteger.add(KEYSPACE_SIZE);
+    }
+
+    public KeyImpl(BigInteger bigInteger) throws GUIDGenerationException {
+        this.algorithm = ALGORITHM.NONE;
 
         try {
-            this.key_value = key_value.remainder(KEYSPACE_SIZE);
+            KEYSPACE_SIZE = TWO.pow(getKeylength());
+            bigInteger = bigInteger.remainder(KEYSPACE_SIZE);
 
             // Allow for negative key value.
-            if (this.key_value.compareTo(BigInteger.ZERO) < 0)
-                this.key_value = this.key_value.add(KEYSPACE_SIZE);
+            if (bigInteger.compareTo(BigInteger.ZERO) < 0)
+                bigInteger = bigInteger.add(KEYSPACE_SIZE);
 
-        } catch (NumberFormatException e) {
-            throw new GUIDGenerationException();
-        }
-
-        try {
-            String hexString = this.key_value.toString(DEFAULT_TO_STRING_RADIX);
-            if (hexString.length() % 2 == 1) hexString = "0"+hexString;
+            String hexString = bigInteger.toString(DEFAULT_TO_STRING_RADIX);
+            if (hexString.length() % 2 == 1) hexString = "0" + hexString;
             key_value_bytes = Hex.decodeHex(hexString.toCharArray());
         } catch (DecoderException e) {
-            e.printStackTrace();
-            throw new GUIDGenerationException("Unable to decode key to hex array");
+            throw new GUIDGenerationException();
         }
     }
 
-    public KeyImpl(BigInteger key_value) throws GUIDGenerationException {
-        this.algorithm = ALGORITHM.NONE;
-        this.base = BASE.HEX;
+    public KeyImpl(ALGORITHM algorithm, byte[] input) throws GUIDGenerationException {
+        this(input);
 
-        init(key_value);
-    }
-
-    /**
-     * Creates a new key using the given value modulo the key space size.
-     *
-     * BASE: 16
-     *
-     * @param key_value the value of the key
-     */
-    public KeyImpl(ALGORITHM algorithm, BigInteger key_value) throws GUIDGenerationException {
         this.algorithm = algorithm;
-        this.base = BASE.HEX;
-
-        init(key_value);
     }
 
     /**
@@ -90,39 +83,11 @@ public class KeyImpl implements IGUID, IPID {
      * @see #DEFAULT_TO_STRING_RADIX
      */
     public KeyImpl(ALGORITHM algorithm, String string) throws GUIDGenerationException {
-        this.algorithm = algorithm;
-        this.base = BASE.HEX;
-
-        init(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
-    }
-
-    public KeyImpl(ALGORITHM algorithm, String string, BASE base) throws GUIDGenerationException {
-        this.algorithm = algorithm;
-        this.base = base;
-
-        if (base == BASE.HEX) {
-            init(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
-        } else if (base == BASE.BASE_64) {
-            init(new BigInteger(Base64.getDecoder().decode(string)));
-        } else {
-            throw new GUIDGenerationException("The base " + base + " is not supported");
-        }
-    }
-
-    public KeyImpl(ALGORITHM algorithm, byte[] input, BASE base) throws GUIDGenerationException {
-        this.algorithm = algorithm;
-        this.base = base;
-
-        key_value_bytes = input;
+        this(algorithm, string.getBytes());
     }
 
     public ALGORITHM algorithm() {
         return algorithm;
-    }
-
-    @Override
-    public BASE base() {
-        return base;
     }
 
     /**
@@ -131,7 +96,36 @@ public class KeyImpl implements IGUID, IPID {
      * @return the representation of this key
      */
     public BigInteger bigIntegerRepresentation() {
-        return key_value;
+
+        KEYSPACE_SIZE = TWO.pow(getKeylength());
+
+        BigInteger bigInteger = new BigInteger(new String(Hex.encodeHex(key_value_bytes)), DEFAULT_TO_STRING_RADIX);
+        bigInteger = bigInteger.remainder(KEYSPACE_SIZE);
+
+        // Allow for negative key value.
+        if (bigInteger.compareTo(BigInteger.ZERO) < 0)
+            bigInteger = bigInteger.add(KEYSPACE_SIZE);
+
+
+        return bigInteger;
+    }
+
+    @Override
+    public byte[] bytes() {
+        return key_value_bytes;
+    }
+
+    @Override
+    public boolean isInvalid() {
+        return false;
+    }
+
+    protected int getKeylength() {
+        return KEYLENGTH;
+    }
+
+    protected int getStringLength() {
+        return DEFAULT_TO_STRING_LENGTH;
     }
 
     /**
@@ -140,44 +134,34 @@ public class KeyImpl implements IGUID, IPID {
      * @return a string representation of the key value using the default radix and length
      */
     public String toString() {
-        return toString(DEFAULT_TO_STRING_RADIX, getStringLength());
-    }
-
-    @Override
-    public boolean isInvalid() {
-        return false;
+        return toString(BASE.HEX);
     }
 
     /**
      * Returns a string representation of the key value.
      *
-     * @param radix the radix
+     * @param base the radix
      * @return a string representation of the key value using the given radix
      */
     @Override
-    public String toString(int radix) {
+    public String toString(BASE base) {
 
-        if (radix == 64) {
-            return toStringBase64();
-        } else {
-            int bits_per_digit = RadixMethods.bitsNeededTORepresent(radix);
-            int toStringLength = getKeylength() / bits_per_digit;
+        String retval = "";
 
-            return toString(radix, toStringLength);
+        switch(base) {
+            case HEX:
+                retval = applyPadding(Hex.encodeHexString(key_value_bytes), getStringLength());
+                break;
+            case BASE_64:
+                retval = Base64.getEncoder().encodeToString(key_value_bytes);
+                break;
+            case CANON:
+                retval = applyPadding(Hex.encodeHexString(key_value_bytes), getStringLength());
+                retval = applyCANONFormat(retval);
+                break;
         }
-    }
 
-    /**
-     * Returns a string representation of the key value.
-     *
-     * @param radix the radix
-     * @param stringLength the length to which the key representation should be padded
-     * @return a string representation of the key value using the given radix
-     *
-     * NOTE: this function will work up to radix 32
-     */
-    private String toString(int radix, int stringLength) {
-        return applyPadding(key_value.toString(radix), stringLength);
+        return retval;
     }
 
     private String applyPadding(String string, int stringLength) {
@@ -186,8 +170,20 @@ public class KeyImpl implements IGUID, IPID {
         return result.toString();
     }
 
-    private String toStringBase64() {
-        return Base64.getEncoder().encodeToString(key_value_bytes);
+    private String applyCANONFormat(String string) {
+        String raw = string.toUpperCase();
+        StringBuffer sb = new StringBuffer();
+        sb.append(raw.substring(0, 8));
+        sb.append("-");
+        sb.append(raw.substring(8, 12));
+        sb.append("-");
+        sb.append(raw.substring(12, 16));
+        sb.append("-");
+        sb.append(raw.substring(16, 20));
+        sb.append("-");
+        sb.append(raw.substring(20));
+
+        return sb.toString();
     }
 
     /**
@@ -203,10 +199,10 @@ public class KeyImpl implements IGUID, IPID {
         if (o == null || getClass() != o.getClass()) throw new ClassCastException();
 
         IKey k = (IKey) o;
-        if (k.algorithm() != algorithm || k.base() != base) {
+        if (k.algorithm() != algorithm) {
             throw new ClassCastException();
         } else {
-            return key_value.compareTo(k.bigIntegerRepresentation());
+            return bigIntegerRepresentation().compareTo(k.bigIntegerRepresentation());
         }
     }
 
@@ -223,22 +219,15 @@ public class KeyImpl implements IGUID, IPID {
 
         IKey k = (IKey) o;
 
-        if (k.algorithm() != algorithm || k.base() != base) {
+        if (k.algorithm() != algorithm) {
             return false;
         } else {
-            return key_value.equals(k.bigIntegerRepresentation());
+            return Arrays.equals(key_value_bytes, k.bytes());
         }
     }
 
     public int hashCode(){
-        return toMultiHash().hashCode();
+        return Arrays.hashCode(key_value_bytes);
     }
 
-    protected int getKeylength() {
-        return KEYLENGTH;
-    }
-
-    protected int getStringLength() {
-        return DEFAULT_TO_STRING_LENGTH;
-    }
 }

@@ -5,7 +5,7 @@ package uk.ac.standrews.cs.guid;
  */
 public enum BASE {
 
-    INVALID(0), HEX(16), BASE_64(64);
+    INVALID(0), CANON(1), HEX(16), BASE_64(64);
 
     private final int val;
 

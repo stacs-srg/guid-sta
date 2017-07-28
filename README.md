@@ -2,7 +2,7 @@
 
 # guid-sta
 
-`guid-sta` is a small and simple java utility library that simplifies the process of generating GUIDs and PIDs.
+`guid-sta` is a small and simple java utility library that simplifies the process of generating GUIDs.
 
 ## Usage via Maven
 
@@ -22,44 +22,57 @@
 </dependency>
 ```
 
-## Examples
+## GUID Examples
 
 You can generate GUIDs and PIDs via the `GUIDFactory` and the `PIDFactory`.
 
  ```
- IGUID guid = GUIDFactory.generateRandomGUID();
+ IGUID guid = GUIDFactory.generateRandomGUID(ALGORITHM.SHA1);
  System.out.println(guid.toString());
  ```
+
  Output is:
- ```bash
+ ```
  $ 23cec17ec246418a8e82fcc97d70adfe
  ```
 
  You can also generate a GUID given its string version:
  ```
- IGUID guid = GUIDFactory.recreateGUID("23cec17ec246418a8e82fcc97d70adfe");
+ IGUID guid = GUIDFactory.recreateGUID("SHA1:16:23cec17ec246418a8e82fcc97d70adfe");
  System.out.println(guid.toString());
  ```
+
  Output is:
- ```bash
+ ```
  $ 23cec17ec246418a8e82fcc97d70adfe
  ```
 
  Otherwise, you can generate a *brand new* GUID given an string as input (or an InputStream):
  ```
- IGUID guid = GUIDFactory.generateGUID("TEST"); // This can also be an InputStream
+ IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, "TEST"); // This method can also take an InputStream as input
  System.out.println(guid.toString());
  ```
+
  Output is:
- ```bash
+ ```
  $ 984816fd329622876e14907634264e6f332e9fb3
  ```
 
 
-You can only generate random PIDs
-```
-IPID pid = PIDFactory.generateRandomPID();
-```
+## Options
+
+### SHA Algorithms
+
+- SHA1
+- SHA256
+- SHA384
+- SHA512
+
+### Bases
+
+- HEX
+- CANON (HEX, but with 8-4-4-4-12 pattern)
+- BASE_64
 
 
 ## TODO

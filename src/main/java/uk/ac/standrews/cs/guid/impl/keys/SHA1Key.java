@@ -1,7 +1,6 @@
 package uk.ac.standrews.cs.guid.impl.keys;
 
 import uk.ac.standrews.cs.guid.ALGORITHM;
-import uk.ac.standrews.cs.guid.BASE;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 
 /**
@@ -16,12 +15,8 @@ public class SHA1Key extends KeyImpl {
         super(ALGORITHM.SHA1, string);
     }
 
-    public SHA1Key(String string, BASE base) throws GUIDGenerationException {
-        super(ALGORITHM.SHA1, string, base);
-    }
-
-    public SHA1Key(byte[] input, BASE base) throws GUIDGenerationException {
-        super(ALGORITHM.SHA1, input, base);
+    public SHA1Key(byte[] input) throws GUIDGenerationException {
+        super(ALGORITHM.SHA1, input);
     }
 
     @Override

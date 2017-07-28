@@ -1,9 +1,7 @@
 package uk.ac.standrews.cs.guid;
 
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.guid.impl.SHAKeyFactory;
 import uk.ac.standrews.cs.guid.impl.keys.InvalidID;
 import uk.ac.standrews.cs.guid.utils.StreamsUtils;
 
@@ -30,23 +28,17 @@ public class GUIDFactoryTest {
     public static final String TEST_STRING_HASHED = "984816fd329622876e14907634264e6f332e9fb3";
     public static final String TEST_EMPTY_STRING_HASHED = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
 
-    @BeforeMethod
-    public void setUp() throws GUIDGenerationException {
-        // Make sure that the default SHA algorithm is set
-        SHAKeyFactory.setSHAAlgorithm(ALGORITHM.SHA1);
-    }
-
     @Test
     public void generateGUIDFromStreamTest() throws Exception {
         InputStream inputStreamFake = StreamsUtils.StringToInputStream(TEST_STRING);
-        IGUID guid = GUIDFactory.generateGUID(inputStreamFake);
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, inputStreamFake);
         assertEquals(TEST_STRING_HASHED, guid.toString());
     }
 
     @Test
     public void generateGUIDFromEmptyStreamTest() throws Exception {
         InputStream inputStreamFake = StreamsUtils.StringToInputStream(TEST_EMPTY_STRING);
-        IGUID guid = GUIDFactory.generateGUID(inputStreamFake);
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, inputStreamFake);
         assertNotNull(guid);
         assertEquals(TEST_EMPTY_STRING_HASHED, guid.toString());
     }
@@ -54,29 +46,29 @@ public class GUIDFactoryTest {
     @Test (expectedExceptions = GUIDGenerationException.class)
     public void nullStreamTest() throws Exception {
         InputStream stream = null;
-        GUIDFactory.generateGUID(stream);
+        GUIDFactory.generateGUID(ALGORITHM.SHA1, stream);
     }
 
     @Test (expectedExceptions = GUIDGenerationException.class)
     public void generateGUIDNullStringTest() throws Exception {
         String string = null;
-        GUIDFactory.generateGUID(string);
+        GUIDFactory.generateGUID(ALGORITHM.SHA1, string);
     }
 
     @Test (expectedExceptions = GUIDGenerationException.class)
     public void generateGUIDNullStreamTest() throws Exception {
         InputStream stream = null;
-        GUIDFactory.generateGUID(stream);
+        GUIDFactory.generateGUID(ALGORITHM.SHA1, stream);
     }
 
     @Test (expectedExceptions = GUIDGenerationException.class)
     public void generateGUIDEmptyStringTest() throws Exception {
-        GUIDFactory.generateGUID(TEST_EMPTY_STRING);
+        GUIDFactory.generateGUID(ALGORITHM.SHA1, TEST_EMPTY_STRING);
     }
 
     @Test
     public void randomGUIDTest() throws Exception {
-        IGUID guid = GUIDFactory.generateRandomGUID();
+        IGUID guid = GUIDFactory.generateRandomGUID(ALGORITHM.SHA1);
         assertNotNull(guid);
         assertNotEquals(guid, new InvalidID());
     }
@@ -85,23 +77,21 @@ public class GUIDFactoryTest {
     public void manyRandomGUIDTest() throws Exception {
         LinkedHashSet<IGUID> guids = new LinkedHashSet<>();
         for(int i = 0; i < 100; i++) {
-            guids.add(GUIDFactory.generateRandomGUID());
+            guids.add(GUIDFactory.generateRandomGUID(ALGORITHM.SHA1));
         }
 
         assertEquals(100, guids.size());
     }
 
-
-
     @Test
     public void generateGUID_abc_NIST_Test() throws Exception {
-        IGUID guid = GUIDFactory.generateGUID("abc");
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, "abc");
         assertEquals("a9993e364706816aba3e25717850c26c9cd0d89d", guid.toString());
     }
 
     @Test
     public void generateGUID_long_string_NIST_Test() throws Exception {
-        IGUID guid = GUIDFactory.generateGUID("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
         assertEquals("84983e441c3bd26ebaae4aa1f95129e5e54670f1", guid.toString());
     }
 
@@ -113,8 +103,7 @@ public class GUIDFactoryTest {
 
     @Test
     public void generateGUID_256_long_string_NIST_Test() throws Exception {
-        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA256,
-                "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA256, "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
         assertEquals("248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1", guid.toString());
     }
 
@@ -126,8 +115,7 @@ public class GUIDFactoryTest {
 
     @Test
     public void generateGUID_384_long_string_NIST_Test() throws Exception {
-        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA384,
-                "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA384, "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
         assertEquals("09330c33f71147e83d192fc782cd1b4753111b173b3b05d22fa08086e3b0f712fcc7c71a557e2db966c3e9fa91746039", guid.toString());
     }
 
@@ -139,15 +127,14 @@ public class GUIDFactoryTest {
 
     @Test
     public void generateGUID_512_long_string_NIST_Test() throws Exception {
-        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA512,
-                "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA512, "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
         assertEquals("8e959b75dae313da8cf4f72814fc143f8f7779c6eb9f7fa17299aeadb6889018501d289e4900f7e4331b99dec4b5433ac7d329eeb6dd26545e96e55b874be909", guid.toString());
     }
 
     @Test
     public void shortStringTest() throws Exception {
         InputStream inputStreamFake = StreamsUtils.StringToInputStream(TEST_STRING);
-        IGUID guid = GUIDFactory.generateGUID(inputStreamFake);
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, inputStreamFake);
 
         assertTrue(TEST_STRING_HASHED.startsWith(guid.toShortString()));
     }
@@ -155,8 +142,8 @@ public class GUIDFactoryTest {
     @Test
     public void multiHashTest() throws Exception {
         InputStream inputStreamFake = StreamsUtils.StringToInputStream(TEST_STRING);
-        IGUID guid = GUIDFactory.generateGUID(inputStreamFake);
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, inputStreamFake);
 
-        assertEquals(guid.toMultiHash(), "SHA1:16:" + TEST_STRING_HASHED);
+        assertEquals(guid.toMultiHash(BASE.HEX), "SHA1:16:" + TEST_STRING_HASHED);
     }
 }

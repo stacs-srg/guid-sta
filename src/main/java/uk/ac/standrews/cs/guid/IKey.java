@@ -16,20 +16,18 @@ public interface IKey extends Comparable {
     ALGORITHM algorithm();
 
     /**
-     *
-     * @return the encoding base for this key
-     */
-    BASE base();
-
-    /**
      * @return a BigInteger representation of this key
      */
     BigInteger bigIntegerRepresentation();
 
     /**
+     * The bytes that make the key
+     * @return
+     */
+    byte[] bytes();
+
+    /**
      * @return a string representation of this key in base 16
-     *
-     * TODO - use the base as in the local field
      */
     String toString();
 
@@ -38,7 +36,7 @@ public interface IKey extends Comparable {
      * @param base the base must be a power of 2
      * @return a string representation of this key with the given base
      */
-    String toString(int base);
+    String toString(BASE base);
 
     /**
      * Return a short representation of the key
@@ -52,13 +50,12 @@ public interface IKey extends Comparable {
      * The key in string format as a combination of its algorithm, the base and the key itself
      * @return multihash key
      */
-    default String toMultiHash() {
+    default String toMultiHash(BASE base) {
 
-        return algorithm().toString() + ":" + base().getVal() + ":" + toString();
+        return algorithm().toString() + ":" + base.getVal() + ":" + toString(base);
     }
 
     /**
-     *
      * @return true if this key is not valid
      */
     boolean isInvalid();
