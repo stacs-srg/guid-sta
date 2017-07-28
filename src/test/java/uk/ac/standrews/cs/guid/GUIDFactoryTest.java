@@ -144,6 +144,6 @@ public class GUIDFactoryTest {
         InputStream inputStreamFake = StreamsUtils.StringToInputStream(TEST_STRING);
         IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, inputStreamFake);
 
-        assertEquals(guid.toMultiHash(BASE.HEX), "SHA1:16:" + TEST_STRING_HASHED);
+        assertEquals(guid.toMultiHash(BASE.HEX), "SHA1_16_" + TEST_STRING_HASHED);
     }
 }

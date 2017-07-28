@@ -12,6 +12,8 @@ import uk.ac.standrews.cs.guid.impl.keys.KeyImpl;
 import java.io.InputStream;
 import java.util.Base64;
 
+import static uk.ac.standrews.cs.guid.IKey.MULTI_HASH_DELIMITER;
+
 public class GUIDFactory {
 
     public static IGUID generateRandomGUID(ALGORITHM algorithm) throws GUIDGenerationException {
@@ -34,7 +36,7 @@ public class GUIDFactory {
     /**
      * Recreate a GUID from its multihash string format.
      *
-     * @param multihash ALGORITHM:BASE:KEY (e.g. SHA1:16:a9993e364706816aba3e25717850c26c9cd0d89d)
+     * @param multihash ALGORITHM:BASE:KEY (e.g. SHA1-16-a9993e364706816aba3e25717850c26c9cd0d89d)
      * @return GUID object
      * @throws GUIDGenerationException if the GUID could not be recreated
      */
@@ -42,7 +44,7 @@ public class GUIDFactory {
 
         if (multihash == null || multihash.isEmpty()) throw new GUIDGenerationException();
 
-        String[] multihashComponents = multihash.split(":");
+        String[] multihashComponents = multihash.split(MULTI_HASH_DELIMITER);
         if (multihashComponents.length != 3) throw new GUIDGenerationException();
 
         try {

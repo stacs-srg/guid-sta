@@ -9,6 +9,8 @@ import java.math.BigInteger;
  */
 public interface IKey extends Comparable {
 
+    public static final String MULTI_HASH_DELIMITER = "_";
+
     /**
      *
      * @return the algorithm used for this key
@@ -52,7 +54,7 @@ public interface IKey extends Comparable {
      */
     default String toMultiHash(BASE base) {
 
-        return algorithm().toString() + ":" + base.getVal() + ":" + toString(base);
+        return algorithm().toString() + MULTI_HASH_DELIMITER + base.getVal() + MULTI_HASH_DELIMITER + toString(base);
     }
 
     /**

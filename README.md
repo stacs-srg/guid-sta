@@ -38,7 +38,7 @@ You can generate GUIDs and PIDs via the `GUIDFactory` and the `PIDFactory`.
 
  You can also generate a GUID given its string version:
  ```
- IGUID guid = GUIDFactory.recreateGUID("SHA1:16:23cec17ec246418a8e82fcc97d70adfe");
+ IGUID guid = GUIDFactory.recreateGUID("SHA1-16-23cec17ec246418a8e82fcc97d70adfe");
  System.out.println(guid.toString());
  ```
 
@@ -79,6 +79,7 @@ You can generate GUIDs and PIDs via the `GUIDFactory` and the `PIDFactory`.
 
 - [ ] UUID
 - [ ] ETags
+- [ ] Encode length of Key as in multiformats
 
 
 ## Authors

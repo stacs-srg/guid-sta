@@ -21,7 +21,7 @@ public class SHAKeyFactoryTest {
         KeyImpl guid = (KeyImpl) SHAKeyFactory.generateKey(ALGORITHM.SHA1, "abc".getBytes());
         assertEquals(guid.toString(), "a9993e364706816aba3e25717850c26c9cd0d89d");
 
-        KeyImpl recreatedGUID = (KeyImpl) GUIDFactory.recreateGUID("SHA1:16:a9993e364706816aba3e25717850c26c9cd0d89d");
+        KeyImpl recreatedGUID = (KeyImpl) GUIDFactory.recreateGUID("SHA1_16_a9993e364706816aba3e25717850c26c9cd0d89d");
         assertEquals(recreatedGUID.toString(), "a9993e364706816aba3e25717850c26c9cd0d89d");
     }
 
@@ -31,9 +31,8 @@ public class SHAKeyFactoryTest {
         IGUID guid = (KeyImpl) SHAKeyFactory.generateKey(ALGORITHM.SHA1, "abc".getBytes());
         assertEquals(guid.toString(BASE.BASE_64), "qZk+NkcGgWq6PiVxeFDCbJzQ2J0=");
 
-        KeyImpl recreatedGUID = (KeyImpl) GUIDFactory.recreateGUID("SHA1:64:qZk+NkcGgWq6PiVxeFDCbJzQ2J0=");
+        KeyImpl recreatedGUID = (KeyImpl) GUIDFactory.recreateGUID("SHA1_64_qZk+NkcGgWq6PiVxeFDCbJzQ2J0=");
         assertEquals(recreatedGUID.toString(BASE.BASE_64), "qZk+NkcGgWq6PiVxeFDCbJzQ2J0=");
-
     }
 
     @Test
