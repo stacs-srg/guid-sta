@@ -26,6 +26,12 @@ public class GUIDFactoryRecreateGUIDsTest {
         assertEquals(guid.toString(), "984816fd329622876e14907634264e6f332e9fb3");
     }
 
+    @Test
+    public void recreateGUIDFromMultihashTest() throws GUIDGenerationException {
+        IGUID guid = GUIDFactory.recreateGUID("SHA1:16:984816fd329622876e14907634264e6f332e9fb3");
+        assertEquals(guid.toString(), "984816fd329622876e14907634264e6f332e9fb3");
+    }
+
     @Test (expectedExceptions = GUIDGenerationException.class)
     public void recreateGUIDWrongBaseTest() throws GUIDGenerationException {
         IGUID guid = GUIDFactory.recreateGUID(TEST_STRING_HASHED, BASE.INVALID);

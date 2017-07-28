@@ -23,8 +23,24 @@ public class GUIDFactory {
         return (KeyImpl) SHAKeyFactory.recreateKey(string, base);
     }
 
-    public static IGUID recreateGUID(String string) throws GUIDGenerationException {
-        return (KeyImpl) SHAKeyFactory.recreateKey(string, BASE.HEX);
+    /**
+     * Recreate a GUID from its multihash string format.
+     *
+     * @param multihash ALGORITHM:BASE:KEY (e.g. SHA1:16:a9993e364706816aba3e25717850c26c9cd0d89d)
+     * @return GUID object
+     * @throws GUIDGenerationException if the GUID could not be recreated
+     */
+    public static IGUID recreateGUID(String multihash) throws GUIDGenerationException {
+
+        String[] multihashComponents = multihash.split(":");
+        if (multihashComponents.length != 3) throw new GUIDGenerationException();
+
+        ALGORITHM algorithm = ALGORITHM.get(multihashComponents[0]);
+        BASE base = BASE.get(Integer.parseInt(multihashComponents[1]));
+
+        SHAKeyFactory.setSHAAlgorithm(algorithm);
+
+        return (KeyImpl) SHAKeyFactory.recreateKey(multihashComponents[2], base);
     }
 
     public static IGUID generateGUID(String string) throws GUIDGenerationException {

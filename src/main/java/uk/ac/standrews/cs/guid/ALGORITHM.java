@@ -22,4 +22,10 @@ public enum ALGORITHM {
     public String toString() {
         return text;
     }
+
+    public static ALGORITHM get(String value) {
+        for(ALGORITHM v : values())
+            if(v.toString().equalsIgnoreCase(value)) return v;
+        throw new IllegalArgumentException();
+    }
 }

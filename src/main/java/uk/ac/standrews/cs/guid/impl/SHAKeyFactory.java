@@ -69,7 +69,7 @@ public class SHAKeyFactory {
             throw new GUIDGenerationException();
         }
 
-        return generateKey(string.getBytes());
+        return generateKey(string.getBytes(), BASE.HEX);
     }
 
     /**
@@ -104,12 +104,12 @@ public class SHAKeyFactory {
      * @param bytes the array from which to generate the key's value
      * @return a key with a value generated from bytes
      */
-    public static IKey generateKey(byte[] bytes) throws GUIDGenerationException {
+    public static IKey generateKey(byte[] bytes, BASE base) throws GUIDGenerationException {
         if (bytes == null || bytes.length == 0) {
             throw new GUIDGenerationException();
         }
 
-        return hash(bytes);
+        return hash(bytes, base);
     }
 
     /**
@@ -142,23 +142,23 @@ public class SHAKeyFactory {
         return generateKey(String.valueOf(seed));
     }
 
-    private static IKey hash(byte[] source) throws GUIDGenerationException {
+    private static IKey hash(byte[] source, BASE base) throws GUIDGenerationException {
 
         String hex = "";
 
         switch(algorithm) {
             case SHA1:
-                hex = DigestUtils.sha1Hex(source);
-                return new SHA1Key(hex);
+                byte[] hexB = DigestUtils.sha1(source);
+                return new SHA1Key(hexB, base);
             case SHA256:
                 hex = DigestUtils.sha256Hex(source);
-                return new SHA256Key(hex);
+                return new SHA256Key(hex, base);
             case SHA384:
                 hex = DigestUtils.sha384Hex(source);
-                return new SHA384Key(hex);
+                return new SHA384Key(hex, base);
             case SHA512:
                 hex = DigestUtils.sha512Hex(source);
-                return new SHA512Key(hex);
+                return new SHA512Key(hex, base);
             default:
                 throw new GUIDGenerationException("Unsupported sha algorithm: " + algorithm);
         }

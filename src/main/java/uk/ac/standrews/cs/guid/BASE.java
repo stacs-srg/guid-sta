@@ -16,4 +16,10 @@ public enum BASE {
     public int getVal() {
         return val;
     }
+
+    public static BASE get(int val) {
+        for(BASE v : values())
+            if(v.getVal() == val) return v;
+        throw new IllegalArgumentException();
+    }
 }

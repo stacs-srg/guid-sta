@@ -9,8 +9,16 @@ import java.math.BigInteger;
  */
 public interface IKey extends Comparable {
 
+    /**
+     *
+     * @return the algorithm used for this key
+     */
     ALGORITHM algorithm();
 
+    /**
+     *
+     * @return the encoding base for this key
+     */
     BASE base();
 
     /**
@@ -20,6 +28,8 @@ public interface IKey extends Comparable {
 
     /**
      * @return a string representation of this key in base 16
+     *
+     * TODO - use the base as in the local field
      */
     String toString();
 
@@ -38,6 +48,10 @@ public interface IKey extends Comparable {
         return toString().substring(0, 5);
     }
 
+    /**
+     * The key in string format as a combination of its algorithm, the base and the key itself
+     * @return multihash key
+     */
     default String toMultiHash() {
 
         return algorithm().toString() + ":" + base().getVal() + ":" + toString();

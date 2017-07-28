@@ -11,16 +11,16 @@ import java.util.Base64;
 
 /**
  * Implementation of key.
- * 
- * @author stuart, al, graham, sja7
- * @author sic2 - removed p2p dependencies
+ *
+ * @author stuart, al, graham, sja7 - original authors
+ * @author sic2 - removed p2p dependencies, enabled multi-bases and multi-algorithms
  */
 public class KeyImpl implements IGUID, IPID {
 
     private static final int KEYLENGTH = 160;
     private static final BigInteger TWO = BigInteger.ONE.add(BigInteger.ONE);
 
-    private static final int DEFAULT_TO_STRING_RADIX = 16; // The radix used in converting the key's value to a string.
+    private static final int DEFAULT_TO_STRING_RADIX = BASE.HEX.getVal(); // The radix used in converting the key's value to a string.
     private static final int DEFAULT_TO_STRING_LENGTH = 40; // The length of the key's value in digits.
 
     public static BigInteger KEYSPACE_SIZE;
@@ -109,6 +109,13 @@ public class KeyImpl implements IGUID, IPID {
         }
     }
 
+    public KeyImpl(ALGORITHM algorithm, byte[] input, BASE base) throws GUIDGenerationException {
+        this.algorithm = algorithm;
+        this.base = base;
+
+        key_value_bytes = input;
+    }
+
     public ALGORITHM algorithm() {
         return algorithm;
     }
@@ -191,11 +198,15 @@ public class KeyImpl implements IGUID, IPID {
      *         than this node, respectively
      */
     public int compareTo(Object o) {
-        try {
-            IKey k = (IKey) o;
+
+        if (this == o) return 0;
+        if (o == null || getClass() != o.getClass()) throw new ClassCastException();
+
+        IKey k = (IKey) o;
+        if (k.algorithm() != algorithm || k.base() != base) {
+            throw new ClassCastException();
+        } else {
             return key_value.compareTo(k.bigIntegerRepresentation());
-        } catch (ClassCastException e) {
-            return 0;
         }
     }
 
@@ -206,16 +217,21 @@ public class KeyImpl implements IGUID, IPID {
      * @return true if the argument key's representation is equal to that of this node
      */
     public boolean equals(Object o) {
-        try {
-            IKey k = (IKey) o;
-            return key_value.equals(k.bigIntegerRepresentation());
-        } catch (ClassCastException e) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IKey k = (IKey) o;
+
+        if (k.algorithm() != algorithm || k.base() != base) {
             return false;
+        } else {
+            return key_value.equals(k.bigIntegerRepresentation());
         }
     }
 
     public int hashCode(){
-        return toString().hashCode();
+        return toMultiHash().hashCode();
     }
 
     protected int getKeylength() {

@@ -20,6 +20,10 @@ public class SHA1Key extends KeyImpl {
         super(ALGORITHM.SHA1, string, base);
     }
 
+    public SHA1Key(byte[] input, BASE base) throws GUIDGenerationException {
+        super(ALGORITHM.SHA1, input, base);
+    }
+
     @Override
     protected int getKeylength() {
         return KEYLENGTH;
