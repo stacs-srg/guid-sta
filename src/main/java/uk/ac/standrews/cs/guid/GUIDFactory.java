@@ -16,7 +16,7 @@ import static uk.ac.standrews.cs.guid.IKey.MULTI_HASH_DELIMITER;
 
 public class GUIDFactory {
 
-    public static IGUID generateRandomGUID(ALGORITHM algorithm) throws GUIDGenerationException {
+    public static IGUID generateRandomGUID(ALGORITHM algorithm) {
 
         try {
             return (KeyImpl) SHAKeyFactory.generateRandomKey(algorithm);
