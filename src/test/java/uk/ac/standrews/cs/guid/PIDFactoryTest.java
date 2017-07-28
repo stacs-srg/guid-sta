@@ -1,8 +1,6 @@
-package uk.ac.standrews.cs;
+package uk.ac.standrews.cs.guid;
 
 import org.testng.annotations.Test;
-import uk.ac.standrews.cs.guid.IPID;
-import uk.ac.standrews.cs.guid.PIDFactory;
 import uk.ac.standrews.cs.guid.impl.keys.InvalidID;
 
 import static org.testng.Assert.assertNotEquals;

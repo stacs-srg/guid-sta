@@ -1,10 +1,9 @@
-package uk.ac.standrews.cs;/*
+package uk.ac.standrews.cs.guid;/*
  * Created on Dec 15, 2004 at 10:56:29 PM.
  */
 
 
 import org.testng.annotations.Test;
-import uk.ac.standrews.cs.guid.IKey;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 import uk.ac.standrews.cs.guid.impl.SHAKeyFactory;
 

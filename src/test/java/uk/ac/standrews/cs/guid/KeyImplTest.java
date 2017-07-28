@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs;/*
+package uk.ac.standrews.cs.guid;/*
  * Created on Dec 12, 2004 at 5:24:27 PM.
  */
 

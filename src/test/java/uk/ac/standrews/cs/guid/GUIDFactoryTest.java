@@ -1,13 +1,11 @@
-package uk.ac.standrews.cs;
+package uk.ac.standrews.cs.guid;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import uk.ac.standrews.cs.guid.GUIDFactory;
-import uk.ac.standrews.cs.guid.IGUID;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 import uk.ac.standrews.cs.guid.impl.SHAKeyFactory;
 import uk.ac.standrews.cs.guid.impl.keys.InvalidID;
-import uk.ac.standrews.cs.utils.StreamsUtils;
+import uk.ac.standrews.cs.guid.utils.StreamsUtils;
 
 import java.io.InputStream;
 import java.util.LinkedHashSet;

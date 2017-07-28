@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs.utils;
+package uk.ac.standrews.cs.guid.utils;
 
 import org.apache.xmlbeans.impl.common.ReaderInputStream;
 
