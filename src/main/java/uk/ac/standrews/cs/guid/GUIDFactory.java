@@ -19,12 +19,12 @@ public class GUIDFactory {
         }
     }
     
-    public static IGUID recreateGUID(String string, int base) throws GUIDGenerationException {
+    public static IGUID recreateGUID(String string, BASE base) throws GUIDGenerationException {
         return (KeyImpl) SHAKeyFactory.recreateKey(string, base);
     }
 
     public static IGUID recreateGUID(String string) throws GUIDGenerationException {
-        return (KeyImpl) SHAKeyFactory.recreateKey(string, 16); // DEFAULT BASE - TODO - use constant
+        return (KeyImpl) SHAKeyFactory.recreateKey(string, BASE.HEX);
     }
 
     public static IGUID generateGUID(String string) throws GUIDGenerationException {
@@ -35,7 +35,7 @@ public class GUIDFactory {
         return (KeyImpl) SHAKeyFactory.generateKey(inputStream);
     }
 
-    public static IGUID generateRandomGUID(SHAKeyFactory.SHA_ALGORITHMS algorithm) {
+    public static IGUID generateRandomGUID(ALGORITHM algorithm) throws GUIDGenerationException {
         SHAKeyFactory.setSHAAlgorithm(algorithm);
 
         try {
@@ -45,17 +45,17 @@ public class GUIDFactory {
         }
     }
 
-    public static IGUID recreateGUID(SHAKeyFactory.SHA_ALGORITHMS algorithm, String string, int base) throws GUIDGenerationException {
+    public static IGUID recreateGUID(ALGORITHM algorithm, String string, BASE base) throws GUIDGenerationException {
         SHAKeyFactory.setSHAAlgorithm(algorithm);
         return (KeyImpl) SHAKeyFactory.recreateKey(string, base);
     }
 
-    public static IGUID generateGUID(SHAKeyFactory.SHA_ALGORITHMS algorithm, String string) throws GUIDGenerationException {
+    public static IGUID generateGUID(ALGORITHM algorithm, String string) throws GUIDGenerationException {
         SHAKeyFactory.setSHAAlgorithm(algorithm);
         return (KeyImpl) SHAKeyFactory.generateKey(string);
     }
 
-    public static IGUID generateGUID(SHAKeyFactory.SHA_ALGORITHMS algorithm, InputStream inputStream) throws GUIDGenerationException {
+    public static IGUID generateGUID(ALGORITHM algorithm, InputStream inputStream) throws GUIDGenerationException {
         SHAKeyFactory.setSHAAlgorithm(algorithm);
         return (KeyImpl) SHAKeyFactory.generateKey(inputStream);
     }

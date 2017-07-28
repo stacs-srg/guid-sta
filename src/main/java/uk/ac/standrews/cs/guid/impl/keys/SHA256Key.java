@@ -1,5 +1,7 @@
 package uk.ac.standrews.cs.guid.impl.keys;
 
+import uk.ac.standrews.cs.guid.ALGORITHM;
+import uk.ac.standrews.cs.guid.BASE;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 
 /**
@@ -11,11 +13,11 @@ public class SHA256Key extends KeyImpl {
     private static final int DEFAULT_TO_STRING_LENGTH = 64;
 
     public SHA256Key(String string) throws GUIDGenerationException {
-        super(string);
+        super(ALGORITHM.SHA256, string);
     }
 
-    public SHA256Key(String string, int base) throws GUIDGenerationException {
-        super(string, base);
+    public SHA256Key(String string, BASE base) throws GUIDGenerationException {
+        super(ALGORITHM.SHA256, string, base);
     }
 
     @Override

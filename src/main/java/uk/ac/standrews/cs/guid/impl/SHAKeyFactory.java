@@ -4,6 +4,8 @@
 package uk.ac.standrews.cs.guid.impl;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import uk.ac.standrews.cs.guid.ALGORITHM;
+import uk.ac.standrews.cs.guid.BASE;
 import uk.ac.standrews.cs.guid.IKey;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 import uk.ac.standrews.cs.guid.impl.keys.SHA1Key;
@@ -16,7 +18,7 @@ import java.io.InputStream;
 import java.security.SecureRandom;
 import java.util.Random;
 
-import static uk.ac.standrews.cs.guid.impl.SHAKeyFactory.SHA_ALGORITHMS.SHA1;
+import static uk.ac.standrews.cs.guid.ALGORITHM.SHA1;
 
 /**
  * Provides various ways to generate uk.ac.standrews.cs.impl.
@@ -25,17 +27,26 @@ import static uk.ac.standrews.cs.guid.impl.SHAKeyFactory.SHA_ALGORITHMS.SHA1;
  */
 public class SHAKeyFactory {
 
-    public enum SHA_ALGORITHMS { SHA1, SHA256, SHA384, SHA512};
-    private static SHA_ALGORITHMS SHA_ALGORITHM = SHA1;
+    private static ALGORITHM algorithm = SHA1;
 
     /**
      * Set the SHA Algorithm to use.
-     * The default is SHA-1
+     * The default is SHA-1 if this method is not used.
      *
      * @param shaAlgorithm
      */
-    public static void setSHAAlgorithm(SHA_ALGORITHMS shaAlgorithm) {
-        SHAKeyFactory.SHA_ALGORITHM = shaAlgorithm;
+    public static void setSHAAlgorithm(ALGORITHM shaAlgorithm) throws GUIDGenerationException {
+
+        switch(shaAlgorithm) {
+            case SHA1:
+            case SHA256:
+            case SHA384:
+            case SHA512:
+                SHAKeyFactory.algorithm = shaAlgorithm;
+                break;
+            default:
+                throw new GUIDGenerationException("Algorithm not valid for the SHAKeyFactory");
+        }
     }
 
     /**
@@ -65,23 +76,25 @@ public class SHAKeyFactory {
      * Creates a new key using the String representation of a BigInteger
      *
      * @param string - the String representation of a serialised Key
+     * @param base - the base used for the key
      * @return a new Key using the parameter s as a long value
      */
-    public static IKey recreateKey(String string, int base) throws GUIDGenerationException {
+    public static IKey recreateKey(String string, BASE base) throws GUIDGenerationException {
         if (string == null || string.isEmpty()) {
             throw new GUIDGenerationException();
         }
 
-        if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA1) {
-            return new SHA1Key(string, base);
-        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA256) {
-            return new SHA256Key(string, base);
-        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA384) {
-            return new SHA384Key(string, base);
-        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA512) {
-            return new SHA512Key(string, base);
-        } else {
-            throw new GUIDGenerationException("Unsupported sha algorithm: " + SHA_ALGORITHM);
+        switch(algorithm) {
+            case SHA1:
+                return new SHA1Key(string, base);
+            case SHA256:
+                return new SHA256Key(string, base);
+            case SHA384:
+                return new SHA384Key(string, base);
+            case SHA512:
+                return new SHA512Key(string, base);
+            default:
+            throw new GUIDGenerationException("Unsupported sha algorithm: " + algorithm);
         }
     }
 
@@ -132,20 +145,22 @@ public class SHAKeyFactory {
     private static IKey hash(byte[] source) throws GUIDGenerationException {
 
         String hex = "";
-        if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA1) {
-            hex = DigestUtils.sha1Hex(source);
-            return new SHA1Key(hex);
-        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA256) {
-            hex = DigestUtils.sha256Hex(source);
-            return new SHA256Key(hex);
-        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA384) {
-            hex = DigestUtils.sha384Hex(source);
-            return new SHA384Key(hex);
-        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA512) {
-            hex = DigestUtils.sha512Hex(source);
-            return new SHA512Key(hex);
-        } else {
-            throw new GUIDGenerationException("Unsupported sha algorithm: " + SHA_ALGORITHM);
+
+        switch(algorithm) {
+            case SHA1:
+                hex = DigestUtils.sha1Hex(source);
+                return new SHA1Key(hex);
+            case SHA256:
+                hex = DigestUtils.sha256Hex(source);
+                return new SHA256Key(hex);
+            case SHA384:
+                hex = DigestUtils.sha384Hex(source);
+                return new SHA384Key(hex);
+            case SHA512:
+                hex = DigestUtils.sha512Hex(source);
+                return new SHA512Key(hex);
+            default:
+                throw new GUIDGenerationException("Unsupported sha algorithm: " + algorithm);
         }
 
     }
@@ -153,20 +168,22 @@ public class SHAKeyFactory {
     private static IKey hash(InputStream source) throws GUIDGenerationException, IOException {
 
         String hex = "";
-        if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA1) {
-            hex = DigestUtils.sha1Hex(source);
-            return new SHA1Key(hex);
-        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA256) {
-            hex = DigestUtils.sha256Hex(source);
-            return new SHA256Key(hex);
-        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA384) {
-            hex = DigestUtils.sha384Hex(source);
-            return new SHA384Key(hex);
-        } else if (SHA_ALGORITHM == SHA_ALGORITHMS.SHA512) {
-            hex = DigestUtils.sha512Hex(source);
-            return new SHA512Key(hex);
-        } else {
-            throw new GUIDGenerationException("Unsupported sha algorithm: " + SHA_ALGORITHM);
+
+        switch(algorithm) {
+            case SHA1:
+                hex = DigestUtils.sha1Hex(source);
+                return new SHA1Key(hex);
+            case SHA256:
+                hex = DigestUtils.sha256Hex(source);
+                return new SHA256Key(hex);
+            case SHA384:
+                hex = DigestUtils.sha384Hex(source);
+                return new SHA384Key(hex);
+            case SHA512:
+                hex = DigestUtils.sha512Hex(source);
+                return new SHA512Key(hex);
+            default:
+                throw new GUIDGenerationException("Unsupported sha algorithm: " + algorithm);
         }
 
     }

@@ -9,6 +9,10 @@ import java.math.BigInteger;
  */
 public interface IKey extends Comparable {
 
+    ALGORITHM algorithm();
+
+    BASE base();
+
     /**
      * @return a BigInteger representation of this key
      */
@@ -32,6 +36,11 @@ public interface IKey extends Comparable {
      */
     default String toShortString() {
         return toString().substring(0, 5);
+    }
+
+    default String toMultiHash() {
+
+        return algorithm().toString() + ":" + base().getVal() + ":" + toString();
     }
 
     /**

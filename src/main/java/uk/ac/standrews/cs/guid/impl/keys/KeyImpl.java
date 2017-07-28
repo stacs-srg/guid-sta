@@ -2,9 +2,7 @@ package uk.ac.standrews.cs.guid.impl.keys;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import uk.ac.standrews.cs.guid.IGUID;
-import uk.ac.standrews.cs.guid.IKey;
-import uk.ac.standrews.cs.guid.IPID;
+import uk.ac.standrews.cs.guid.*;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 import uk.ac.standrews.cs.guid.impl.RadixMethods;
 
@@ -28,6 +26,9 @@ public class KeyImpl implements IGUID, IPID {
     public static BigInteger KEYSPACE_SIZE;
     private BigInteger key_value;
     private byte[] key_value_bytes;
+
+    private ALGORITHM algorithm;
+    private BASE base;
 
     /**
      * Default constructor - initialises the keyspace
@@ -61,12 +62,24 @@ public class KeyImpl implements IGUID, IPID {
         }
     }
 
+    public KeyImpl(BigInteger key_value) throws GUIDGenerationException {
+        this.algorithm = ALGORITHM.NONE;
+        this.base = BASE.HEX;
+
+        init(key_value);
+    }
+
     /**
      * Creates a new key using the given value modulo the key space size.
-     * 
+     *
+     * BASE: 16
+     *
      * @param key_value the value of the key
      */
-    public KeyImpl(BigInteger key_value) throws GUIDGenerationException {
+    public KeyImpl(ALGORITHM algorithm, BigInteger key_value) throws GUIDGenerationException {
+        this.algorithm = algorithm;
+        this.base = BASE.HEX;
+
         init(key_value);
     }
 
@@ -76,20 +89,34 @@ public class KeyImpl implements IGUID, IPID {
      * @param string the string value of the key
      * @see #DEFAULT_TO_STRING_RADIX
      */
-    public KeyImpl(String string) throws GUIDGenerationException {
+    public KeyImpl(ALGORITHM algorithm, String string) throws GUIDGenerationException {
+        this.algorithm = algorithm;
+        this.base = BASE.HEX;
+
         init(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
     }
 
-    public KeyImpl(String string, int base) throws GUIDGenerationException {
-        if (base == 16) {
+    public KeyImpl(ALGORITHM algorithm, String string, BASE base) throws GUIDGenerationException {
+        this.algorithm = algorithm;
+        this.base = base;
+
+        if (base == BASE.HEX) {
             init(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
-        } else if (base == 64) {
+        } else if (base == BASE.BASE_64) {
             init(new BigInteger(Base64.getDecoder().decode(string)));
         } else {
-            throw new GUIDGenerationException("Base " + base + " not supported");
+            throw new GUIDGenerationException("The base " + base + " is not supported");
         }
     }
 
+    public ALGORITHM algorithm() {
+        return algorithm;
+    }
+
+    @Override
+    public BASE base() {
+        return base;
+    }
 
     /**
      * Returns the representation of this key.
