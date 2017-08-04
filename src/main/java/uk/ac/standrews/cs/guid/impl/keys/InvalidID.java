@@ -1,16 +1,13 @@
 package uk.ac.standrews.cs.guid.impl.keys;
 
-import uk.ac.standrews.cs.guid.ALGORITHM;
-import uk.ac.standrews.cs.guid.BASE;
-import uk.ac.standrews.cs.guid.IGUID;
-import uk.ac.standrews.cs.guid.IKey;
+import uk.ac.standrews.cs.guid.*;
 
 import java.math.BigInteger;
 
 /**
  * @author Simone I. Conte "sic2@st-andrews.ac.uk"
  */
-public class InvalidID implements IGUID {
+public class InvalidID implements IGUID, IPID {
 
     public BigInteger key_value;
 

@@ -2,10 +2,7 @@ package uk.ac.standrews.cs.guid.impl.keys;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import uk.ac.standrews.cs.guid.ALGORITHM;
-import uk.ac.standrews.cs.guid.BASE;
-import uk.ac.standrews.cs.guid.IGUID;
-import uk.ac.standrews.cs.guid.IKey;
+import uk.ac.standrews.cs.guid.*;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 
 import java.math.BigInteger;
@@ -18,7 +15,7 @@ import java.util.Base64;
  * @author stuart, al, graham, sja7 - original authors
  * @author sic2 - removed p2p dependencies, enabled multi-bases and multi-algorithms
  */
-public class KeyImpl implements IGUID {
+public class KeyImpl implements IGUID, IPID {
 
     private static final int KEYLENGTH = 160;
     private static final BigInteger TWO = BigInteger.ONE.add(BigInteger.ONE);
