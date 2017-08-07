@@ -17,10 +17,12 @@ import java.io.InputStream;
 import java.security.SecureRandom;
 import java.util.Random;
 
-import static uk.ac.standrews.cs.guid.ALGORITHM.SHA1;
+import static uk.ac.standrews.cs.guid.ALGORITHM.SHA256;
 
 /**
  * Provides various ways to generate uk.ac.standrews.cs.impl.
+ *
+ * SHA256 is the default algorithm
  *
  * @author stuart, graham
  */
@@ -32,7 +34,11 @@ public class SHAKeyFactory {
      * @return a key with an arbitrary value
      */
     public static IKey generateKey() throws GUIDGenerationException {
-        return generateKey(SHA1, "null");
+        return generateKey(SHA256, "null");
+    }
+
+    public static IKey generateKey(String string) throws GUIDGenerationException {
+        return generateKey(SHA256, string);
     }
 
     /**
@@ -47,6 +53,10 @@ public class SHAKeyFactory {
         }
 
         return generateKey(algorithm, string.getBytes());
+    }
+
+    public static IKey generateKey(InputStream source) throws GUIDGenerationException {
+        return generateKey(SHA256, source);
     }
 
     /**
@@ -68,12 +78,20 @@ public class SHAKeyFactory {
         }
     }
 
+    public static IKey generateKey(byte[] bytes) throws GUIDGenerationException {
+        return generateKey(SHA256, bytes);
+    }
+
     public static IKey generateKey(ALGORITHM algorithm, byte[] bytes) throws GUIDGenerationException {
         if (bytes == null || bytes.length == 0) {
             throw new GUIDGenerationException();
         }
 
         return hash(algorithm, bytes);
+    }
+
+    public static IKey recreateKey(byte[] string) throws GUIDGenerationException {
+        return recreateKey(SHA256, string);
     }
 
     public static IKey recreateKey(ALGORITHM algorithm, byte[] string) throws GUIDGenerationException {
@@ -90,6 +108,12 @@ public class SHAKeyFactory {
             default:
                 throw new GUIDGenerationException("Unsupported sha algorithm: " + algorithm);
         }
+    }
+
+    public static IKey generateRandomKey() throws GUIDGenerationException {
+        Random rand = new SecureRandom();
+        long seed = rand.nextLong();
+        return generateKey(SHA256, String.valueOf(seed));
     }
 
     /**

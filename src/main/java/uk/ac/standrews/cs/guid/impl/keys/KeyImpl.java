@@ -17,11 +17,11 @@ import java.util.Base64;
  */
 public class KeyImpl implements IGUID, IPID {
 
-    private static final int KEYLENGTH = 160;
+    private static final int KEYLENGTH = 256;
     private static final BigInteger TWO = BigInteger.ONE.add(BigInteger.ONE);
 
     private static final int DEFAULT_TO_STRING_RADIX = BASE.HEX.getVal(); // The radix used in converting the key's value to a string.
-    private static final int DEFAULT_TO_STRING_LENGTH = 40; // The length of the key's value in digits.
+    private static final int DEFAULT_TO_STRING_LENGTH = 64; // The length of the key's value in digits.
 
     private byte[] key_value_bytes;
     public static BigInteger KEYSPACE_SIZE;
@@ -48,6 +48,7 @@ public class KeyImpl implements IGUID, IPID {
             bigInteger = bigInteger.add(KEYSPACE_SIZE);
     }
 
+    // TODO - ability to change string lenght and keylength!!!!
     public KeyImpl(BigInteger bigInteger) throws GUIDGenerationException {
         this.algorithm = ALGORITHM.NONE;
 
@@ -65,6 +66,11 @@ public class KeyImpl implements IGUID, IPID {
         } catch (DecoderException e) {
             throw new GUIDGenerationException();
         }
+    }
+
+    // TODO - ability to change string lenght and keylength!!!!
+    public KeyImpl(String string) throws GUIDGenerationException {
+        this(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
     }
 
     public KeyImpl(ALGORITHM algorithm, byte[] input) throws GUIDGenerationException {
@@ -203,28 +209,22 @@ public class KeyImpl implements IGUID, IPID {
         }
     }
 
-    /**
-     * Compares this key with another.
-     *
-     * @param o the key to compare
-     * @return true if the argument key's representation is equal to that of this node
-     */
+    @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        IKey k = (IKey) o;
+        KeyImpl key = (KeyImpl) o;
 
-        if (k.algorithm() != algorithm) {
-            return false;
-        } else {
-            return Arrays.equals(key_value_bytes, k.bytes());
-        }
+        if (!Arrays.equals(key_value_bytes, key.key_value_bytes)) return false;
+        return algorithm == key.algorithm;
     }
 
-    public int hashCode(){
-        return Arrays.hashCode(key_value_bytes);
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(key_value_bytes);
+        result = 31 * result + (algorithm != null ? algorithm.hashCode() : 0);
+        return result;
     }
 
 }

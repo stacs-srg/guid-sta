@@ -10,6 +10,15 @@ import uk.ac.standrews.cs.guid.impl.keys.KeyImpl;
 
 public class PIDFactory {
 
+    public static IPID generateRandomPID() {
+
+        try {
+            return (KeyImpl) SHAKeyFactory.generateRandomKey(ALGORITHM.SHA256);
+        } catch (GUIDGenerationException e) {
+            return new InvalidID();
+        }
+    }
+
     public static IPID generateRandomPID(ALGORITHM algorithm) {
 
         try {
@@ -19,12 +28,7 @@ public class PIDFactory {
         }
     }
 
-    public static IPID generateRandomPID() {
-
-        try {
-            return (KeyImpl) SHAKeyFactory.generateRandomKey(ALGORITHM.SHA256);
-        } catch (GUIDGenerationException e) {
-            return new InvalidID();
-        }
+    public static IPID recreateGUID(String multihash) throws GUIDGenerationException {
+        return (KeyImpl) GUIDFactory.recreateGUID(multihash);
     }
 }
