@@ -30,7 +30,7 @@ public class InvalidIDTest {
     public void multihashTest() {
 
         IKey key = new InvalidID();
-        assertEquals(key.toMultiHash(), "INVALID_INVALID_0");
+        assertEquals(key.toMultiHash(), "INVALID_0_0");
     }
 
     @Test
