@@ -5,6 +5,8 @@ import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 import uk.ac.standrews.cs.guid.impl.keys.InvalidID;
 import uk.ac.standrews.cs.guid.utils.StreamsUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.LinkedHashSet;
 
@@ -24,9 +26,14 @@ public class GUIDFactoryTest {
 
     public static final String TEST_STRING = "TEST";
     public static final String TEST_EMPTY_STRING = "";
+    public static final String HELLO_STRING = "hello";
 
     public static final String TEST_STRING_HASHED = "984816fd329622876e14907634264e6f332e9fb3";
     public static final String TEST_EMPTY_STRING_HASHED = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
+    public static final String HELLO_STRING_HASHED_SHA1 = "aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d";
+    public static final String HELLO_STRING_HASHED_SHA256 = "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824";
+    public static final String HELLO_STRING_HASHED_SHA384 = "59e1748777448c69de6b800d7a33bbfb9ff1b463e44354c3553bcdb9c666fa90125a3c79f90397bdf5f6a13de828684f";
+    public static final String HELLO_STRING_HASHED_SHA512 = "9b71d224bd62f3785d96d46ad3ea3d73319bfbc2890caadae2dff72519673ca72323c3d99ba5c11d7c7acc6e14b8c5da0c4663475c2e5c3adef46f73bcdec043";
 
     @Test
     public void generateGUIDFromStreamTest() throws Exception {
@@ -145,5 +152,50 @@ public class GUIDFactoryTest {
         IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, inputStreamFake);
 
         assertEquals(guid.toMultiHash(BASE.HEX), "SHA1_16_" + TEST_STRING_HASHED);
+    }
+
+    @Test
+    public void fileSHA1Hash() throws GUIDGenerationException, FileNotFoundException {
+
+        File file = new File("src/test/resources/hello.txt");
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, file);
+
+        assertEquals(guid.toMultiHash(), "SHA1_16_" + HELLO_STRING_HASHED_SHA1);
+    }
+
+    @Test
+    public void fileSHA256Hash() throws GUIDGenerationException, FileNotFoundException {
+
+        File file = new File("src/test/resources/hello.txt");
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA256, file);
+
+        assertEquals(guid.toMultiHash(), "SHA256_16_" + HELLO_STRING_HASHED_SHA256);
+    }
+
+    @Test
+    public void fileSHA384Hash() throws GUIDGenerationException, FileNotFoundException {
+
+        File file = new File("src/test/resources/hello.txt");
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA384, file);
+
+        assertEquals(guid.toMultiHash(), "SHA384_16_" + HELLO_STRING_HASHED_SHA384);
+    }
+
+    @Test
+    public void fileSHA512Hash() throws GUIDGenerationException, FileNotFoundException {
+
+        File file = new File("src/test/resources/hello.txt");
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA512, file);
+
+        assertEquals(guid.toMultiHash(), "SHA512_16_" + HELLO_STRING_HASHED_SHA512);
+    }
+
+    @Test
+    public void emptyFileSHA1Hash() throws GUIDGenerationException, FileNotFoundException {
+
+        File file = new File("src/test/resources/empty.txt");
+        IGUID guid = GUIDFactory.generateGUID(ALGORITHM.SHA1, file);
+
+        assertEquals(guid.toMultiHash(), "SHA1_16_" + TEST_EMPTY_STRING_HASHED);
     }
 }

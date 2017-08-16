@@ -32,7 +32,7 @@ public class InvalidID implements IGUID, IPID {
 
     @Override
     public String toString(BASE base) {
-        return null;
+        return "0";
     }
 
     @Override

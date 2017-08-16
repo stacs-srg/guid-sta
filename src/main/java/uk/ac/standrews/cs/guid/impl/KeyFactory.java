@@ -7,10 +7,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import uk.ac.standrews.cs.guid.ALGORITHM;
 import uk.ac.standrews.cs.guid.IKey;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.guid.impl.keys.SHA1Key;
-import uk.ac.standrews.cs.guid.impl.keys.SHA256Key;
-import uk.ac.standrews.cs.guid.impl.keys.SHA384Key;
-import uk.ac.standrews.cs.guid.impl.keys.SHA512Key;
+import uk.ac.standrews.cs.guid.impl.keys.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,9 +21,9 @@ import static uk.ac.standrews.cs.guid.ALGORITHM.SHA256;
  *
  * SHA256 is the default algorithm
  *
- * @author stuart, graham
+ * @author stuart, graham, sic2
  */
-public class SHAKeyFactory {
+public class KeyFactory {
 
     /**
      * Creates a key with an arbitrary value.
@@ -105,6 +102,8 @@ public class SHAKeyFactory {
                 return new SHA384Key(string);
             case SHA512:
                 return new SHA512Key(string);
+            case MD5:
+                return new MD5Key(string);
             default:
                 throw new GUIDGenerationException("Unsupported sha algorithm: " + algorithm);
         }
@@ -143,8 +142,11 @@ public class SHAKeyFactory {
             case SHA512:
                 bytes = DigestUtils.sha512(source);
                 return new SHA512Key(bytes);
+            case MD5:
+                bytes = DigestUtils.md5(source);
+                return new MD5Key(bytes);
             default:
-                throw new GUIDGenerationException("Unsupported sha algorithm: " + algorithm);
+                throw new GUIDGenerationException("Unsupported algorithm: " + algorithm);
         }
 
     }
@@ -165,8 +167,11 @@ public class SHAKeyFactory {
             case SHA512:
                 bytes = DigestUtils.sha512(source);
                 return new SHA512Key(bytes);
+            case MD5:
+                bytes = DigestUtils.md5(source);
+                return new MD5Key(bytes);
             default:
-                throw new GUIDGenerationException("Unsupported sha algorithm: " + algorithm);
+                throw new GUIDGenerationException("Unsupported algorithm: " + algorithm);
         }
 
     }

@@ -35,7 +35,7 @@ public interface IKey extends Comparable {
 
     /**
      *
-     * @param base the base must be a power of 2
+     * @param base
      * @return a string representation of this key with the given base
      */
     String toString(BASE base);
@@ -60,6 +60,11 @@ public interface IKey extends Comparable {
     default String toMultiHash(BASE base) {
 
         return algorithm().toString() + MULTI_HASH_DELIMITER + base.getVal() + MULTI_HASH_DELIMITER + toString(base);
+    }
+
+    default String toShortMultiHash() {
+
+        return toMultiHash().substring(0, 15);
     }
 
     /**

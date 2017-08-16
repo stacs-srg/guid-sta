@@ -48,7 +48,6 @@ public class KeyImpl implements IGUID, IPID {
             bigInteger = bigInteger.add(KEYSPACE_SIZE);
     }
 
-    // TODO - ability to change string lenght and keylength!!!!
     public KeyImpl(BigInteger bigInteger) throws GUIDGenerationException {
         this.algorithm = ALGORITHM.NONE;
 
@@ -68,7 +67,6 @@ public class KeyImpl implements IGUID, IPID {
         }
     }
 
-    // TODO - ability to change string lenght and keylength!!!!
     public KeyImpl(String string) throws GUIDGenerationException {
         this(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
     }
