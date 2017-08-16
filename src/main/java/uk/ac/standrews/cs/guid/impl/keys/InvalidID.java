@@ -31,8 +31,19 @@ public class InvalidID implements IGUID, IPID {
     }
 
     @Override
+    public String toString() {
+        return "0";
+    }
+
+    @Override
     public String toString(BASE base) {
         return "0";
+    }
+
+    @Override
+    public String toMultiHash(BASE base) {
+
+        return algorithm().toString() + MULTI_HASH_DELIMITER + BASE.INVALID + MULTI_HASH_DELIMITER + toString(base);
     }
 
     @Override
