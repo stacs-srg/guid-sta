@@ -173,18 +173,17 @@ public class KeyImpl implements IGUID, IPID {
 
     private String applyCANONFormat(String string) {
         String raw = string.toUpperCase();
-        StringBuffer sb = new StringBuffer();
-        sb.append(raw.substring(0, 8));
-        sb.append("-");
-        sb.append(raw.substring(8, 12));
-        sb.append("-");
-        sb.append(raw.substring(12, 16));
-        sb.append("-");
-        sb.append(raw.substring(16, 20));
-        sb.append("-");
-        sb.append(raw.substring(20));
+        String sb = raw.substring(0, 8) +
+                "-" +
+                raw.substring(8, 12) +
+                "-" +
+                raw.substring(12, 16) +
+                "-" +
+                raw.substring(16, 20) +
+                "-" +
+                raw.substring(20);
 
-        return sb.toString();
+        return sb;
     }
 
     /**
@@ -214,8 +213,7 @@ public class KeyImpl implements IGUID, IPID {
 
         KeyImpl key = (KeyImpl) o;
 
-        if (!Arrays.equals(key_value_bytes, key.key_value_bytes)) return false;
-        return algorithm == key.algorithm;
+        return Arrays.equals(key_value_bytes, key.key_value_bytes) && algorithm == key.algorithm;
     }
 
     @Override

@@ -19,18 +19,17 @@ public interface IGUID extends IKey {
      */
 
         String raw = toString().toUpperCase();
-        StringBuffer sb = new StringBuffer();
-        sb.append(raw.substring(0, 8));
-        sb.append("-");
-        sb.append(raw.substring(8, 12));
-        sb.append("-");
-        sb.append(raw.substring(12, 16));
-        sb.append("-");
-        sb.append(raw.substring(16, 20));
-        sb.append("-");
-        sb.append(raw.substring(20));
+        String sb = raw.substring(0, 8) +
+                "-" +
+                raw.substring(8, 12) +
+                "-" +
+                raw.substring(12, 16) +
+                "-" +
+                raw.substring(16, 20) +
+                "-" +
+                raw.substring(20);
 
-        return sb.toString();
+        return sb;
     }
 
 
