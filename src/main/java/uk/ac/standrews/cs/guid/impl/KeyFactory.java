@@ -11,6 +11,7 @@ import uk.ac.standrews.cs.guid.impl.keys.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -49,7 +50,7 @@ public class KeyFactory {
             throw new GUIDGenerationException();
         }
 
-        return generateKey(algorithm, string.getBytes());
+        return generateKey(algorithm, string.getBytes(Charset.forName("UTF-8")));
     }
 
     public static IKey generateKey(InputStream source) throws GUIDGenerationException {

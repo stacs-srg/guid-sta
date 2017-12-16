@@ -23,12 +23,6 @@ public interface IKey extends Comparable {
     BigInteger bigIntegerRepresentation();
 
     /**
-     * The bytes that make the key
-     * @return
-     */
-    byte[] bytes();
-
-    /**
      * @return a string representation of this key in base 16
      */
     String toString();

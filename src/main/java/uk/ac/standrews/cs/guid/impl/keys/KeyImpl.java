@@ -6,6 +6,7 @@ import uk.ac.standrews.cs.guid.*;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
 
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -17,6 +18,8 @@ import java.util.Base64;
  */
 public class KeyImpl implements IGUID, IPID {
 
+    static BigInteger KEYSPACE_SIZE;
+
     private static final int KEYLENGTH = 256;
     private static final BigInteger TWO = BigInteger.ONE.add(BigInteger.ONE);
 
@@ -24,9 +27,6 @@ public class KeyImpl implements IGUID, IPID {
     private static final int DEFAULT_TO_STRING_LENGTH = 64; // The length of the key's value in digits.
 
     private byte[] key_value_bytes;
-    public static BigInteger KEYSPACE_SIZE;
-    private BigInteger bigInteger;
-
     private ALGORITHM algorithm;
 
     /**
@@ -37,15 +37,7 @@ public class KeyImpl implements IGUID, IPID {
     private KeyImpl(byte[] key_value_bytes) {
         this.key_value_bytes = key_value_bytes;
 
-        String stringValue = new String(Hex.encodeHex(key_value_bytes));
-        bigInteger = new BigInteger(stringValue, DEFAULT_TO_STRING_RADIX);
-
         KEYSPACE_SIZE = TWO.pow(getKeylength());
-        bigInteger = bigInteger.remainder(KEYSPACE_SIZE);
-
-        // Allow for negative key value.
-        if (bigInteger.compareTo(BigInteger.ZERO) < 0)
-            bigInteger = bigInteger.add(KEYSPACE_SIZE);
     }
 
     public KeyImpl(BigInteger bigInteger) throws GUIDGenerationException {
@@ -60,7 +52,9 @@ public class KeyImpl implements IGUID, IPID {
                 bigInteger = bigInteger.add(KEYSPACE_SIZE);
 
             String hexString = bigInteger.toString(DEFAULT_TO_STRING_RADIX);
-            if (hexString.length() % 2 == 1) hexString = "0" + hexString;
+            if (hexString.length() % 2 != 0) {
+                hexString = "0" + hexString;
+            }
             key_value_bytes = Hex.decodeHex(hexString.toCharArray());
         } catch (DecoderException e) {
             throw new GUIDGenerationException();
@@ -71,7 +65,7 @@ public class KeyImpl implements IGUID, IPID {
         this(new BigInteger(string, DEFAULT_TO_STRING_RADIX));
     }
 
-    public KeyImpl(ALGORITHM algorithm, byte[] input) throws GUIDGenerationException {
+    public KeyImpl(ALGORITHM algorithm, byte[] input) {
         this(input);
 
         this.algorithm = algorithm;
@@ -83,8 +77,8 @@ public class KeyImpl implements IGUID, IPID {
      * @param string the string value of the key
      * @see #DEFAULT_TO_STRING_RADIX
      */
-    public KeyImpl(ALGORITHM algorithm, String string) throws GUIDGenerationException {
-        this(algorithm, string.getBytes());
+    public KeyImpl(ALGORITHM algorithm, String string) {
+        this(algorithm, string.getBytes(Charset.forName("UTF-8")));
     }
 
     public ALGORITHM algorithm() {
@@ -109,11 +103,6 @@ public class KeyImpl implements IGUID, IPID {
 
 
         return bigInteger;
-    }
-
-    @Override
-    public byte[] bytes() {
-        return key_value_bytes;
     }
 
     @Override
@@ -147,8 +136,7 @@ public class KeyImpl implements IGUID, IPID {
     @Override
     public String toString(BASE base) {
 
-        String retval = "";
-
+        String retval;
         switch(base) {
             case HEX:
                 retval = applyPadding(Hex.encodeHexString(key_value_bytes), getStringLength());
@@ -159,6 +147,9 @@ public class KeyImpl implements IGUID, IPID {
             case CANON:
                 retval = applyPadding(Hex.encodeHexString(key_value_bytes), getStringLength());
                 retval = applyCANONFormat(retval);
+                break;
+            default:
+                retval = "0"; // INVALID CASE
                 break;
         }
 
@@ -173,7 +164,8 @@ public class KeyImpl implements IGUID, IPID {
 
     private String applyCANONFormat(String string) {
         String raw = string.toUpperCase();
-        String sb = raw.substring(0, 8) +
+
+        return raw.substring(0, 8) +
                 "-" +
                 raw.substring(8, 12) +
                 "-" +
@@ -182,8 +174,6 @@ public class KeyImpl implements IGUID, IPID {
                 raw.substring(16, 20) +
                 "-" +
                 raw.substring(20);
-
-        return sb;
     }
 
     /**

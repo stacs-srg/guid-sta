@@ -1,11 +1,10 @@
-package uk.ac.standrews.cs.guid;/*
+package uk.ac.standrews.cs.guid.impl.keys;/*
  * Created on Dec 12, 2004 at 5:24:27 PM.
  */
 
 
 import org.testng.annotations.Test;
 import uk.ac.standrews.cs.guid.exceptions.GUIDGenerationException;
-import uk.ac.standrews.cs.guid.impl.keys.KeyImpl;
 
 import java.math.BigInteger;
 
